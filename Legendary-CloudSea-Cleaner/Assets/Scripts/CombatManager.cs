@@ -14,7 +14,7 @@ public class CombatManager : MonoBehaviour
 
     [Header("战斗数值")]
     public int enemyHP = 100;
-    public int enemyAttack = 8;     // 敌人每回合打你多少
+    public int enemyAttack = 8;
     public int maxAP = 3;
     public int playerHP = 100;
     public int maxPlayerHP = 100;
@@ -31,30 +31,27 @@ public class CombatManager : MonoBehaviour
         RefreshUI();
     }
 
-    // ===== 三张牌 =====
+    // ===== 统一打牌方法 =====
 
-    public void OnClick_MengShua()
-    {
-        if (_currentAP < 2 || enemyHP <= 0 || playerHP <= 0) return;
-        _currentAP -= 2;
-        enemyHP = Mathf.Max(0, enemyHP - 14);
-        RefreshUI();
-        CheckEnemyDead();
-    }
-
-    public void OnClick_TouXiMaBu()
+    public void PlayCard(CardData card)
     {
         if (enemyHP <= 0 || playerHP <= 0) return;
-        _block += 3;
-        RefreshUI();
-    }
+        if (_currentAP < card.cost) return;
 
-    public void OnClick_JianTingYaoBan()
-    {
-        if (_currentAP < 1 || enemyHP <= 0 || playerHP <= 0) return;
-        _currentAP -= 1;
-        _block += 8;
+        _currentAP -= card.cost;
+
+        if (card.damage > 0)
+        {
+            enemyHP = Mathf.Max(0, enemyHP - card.damage);
+        }
+
+        if (card.block > 0)
+        {
+            _block += card.block;
+        }
+
         RefreshUI();
+        CheckEnemyDead();
     }
 
     // ===== 结束回合：敌人打你 =====
@@ -63,7 +60,6 @@ public class CombatManager : MonoBehaviour
     {
         if (enemyHP <= 0 || playerHP <= 0) return;
 
-        // 敌人攻击，先扣格挡
         int damage = enemyAttack;
         if (_block > 0)
         {
@@ -72,13 +68,9 @@ public class CombatManager : MonoBehaviour
             damage -= absorbed;
         }
 
-        // 剩下的伤害扣血
         playerHP = Mathf.Max(0, playerHP - damage);
-
-        // 回行动点
         _currentAP = maxAP;
         RefreshUI();
-
         CheckPlayerDead();
     }
 
@@ -94,7 +86,6 @@ public class CombatManager : MonoBehaviour
         if (enemyHP <= 0)
         {
             victoryPanel.SetActive(true);
-            // 战斗结束扣 30 分钟
             if (TimeManager.Instance != null)
             {
                 TimeManager.Instance.SpendTime(30f);

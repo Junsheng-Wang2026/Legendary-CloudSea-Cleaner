@@ -268,6 +268,7 @@ GameObject:
   - component: {fileID: 201303009}
   - component: {fileID: 201303008}
   - component: {fileID: 201303007}
+  - component: {fileID: 201303010}
   m_Layer: 5
   m_Name: Card3
   m_TagString: Untagged
@@ -339,9 +340,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1042877690}
-        m_TargetAssemblyTypeName: CombatManager, Assembly-CSharp
-        m_MethodName: OnClick_JianTingYaoBan
+      - m_Target: {fileID: 201303010}
+        m_TargetAssemblyTypeName: CardButton, Assembly-CSharp
+        m_MethodName: OnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -389,6 +390,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 201303005}
   m_CullTransparentMesh: 1
+--- !u!114 &201303010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 201303005}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 552d51c049b31094eab4b2394f00b225, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  card: {fileID: 11400000, guid: 9186dadcce8dbaf489204332a7da0250, type: 2}
+  combatManager: {fileID: 1042877690}
+  buttonText: {fileID: 505462352}
 --- !u!1 &505462350
 GameObject:
   m_ObjectHideFlags: 0
@@ -744,6 +760,7 @@ GameObject:
   - component: {fileID: 911738575}
   - component: {fileID: 911738574}
   - component: {fileID: 911738573}
+  - component: {fileID: 911738576}
   m_Layer: 5
   m_Name: Card1
   m_TagString: Untagged
@@ -815,9 +832,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1042877690}
-        m_TargetAssemblyTypeName: CombatManager, Assembly-CSharp
-        m_MethodName: OnClick_MengShua
+      - m_Target: {fileID: 911738576}
+        m_TargetAssemblyTypeName: CardButton, Assembly-CSharp
+        m_MethodName: OnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -865,6 +882,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 911738571}
   m_CullTransparentMesh: 1
+--- !u!114 &911738576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 911738571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 552d51c049b31094eab4b2394f00b225, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  card: {fileID: 11400000, guid: b78335a8e695c9e45872d1831f4192db, type: 2}
+  combatManager: {fileID: 1042877690}
+  buttonText: {fileID: 1087349830}
 --- !u!1 &1042877689
 GameObject:
   m_ObjectHideFlags: 0
@@ -1535,6 +1567,7 @@ GameObject:
   - component: {fileID: 1527165864}
   - component: {fileID: 1527165863}
   - component: {fileID: 1527165862}
+  - component: {fileID: 1527165865}
   m_Layer: 5
   m_Name: Card2
   m_TagString: Untagged
@@ -1606,9 +1639,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1042877690}
-        m_TargetAssemblyTypeName: CombatManager, Assembly-CSharp
-        m_MethodName: OnClick_TouXiMaBu
+      - m_Target: {fileID: 1527165865}
+        m_TargetAssemblyTypeName: CardButton, Assembly-CSharp
+        m_MethodName: OnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1656,6 +1689,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1527165860}
   m_CullTransparentMesh: 1
+--- !u!114 &1527165865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1527165860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 552d51c049b31094eab4b2394f00b225, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  card: {fileID: 11400000, guid: 68cde0306d0efca4f8c6052ed33520d1, type: 2}
+  combatManager: {fileID: 1042877690}
+  buttonText: {fileID: 1929136052}
 --- !u!1 &1557725927
 GameObject:
   m_ObjectHideFlags: 0
