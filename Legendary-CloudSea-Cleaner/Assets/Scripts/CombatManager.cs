@@ -2,10 +2,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 
-/// <summary>
-/// 战斗管理器：挂在 Combat 场景根级别的空物体 CombatManager 上。
-/// Day2 极简版：木桩敌人不还手，3 个按钮代替 3 张测试牌。
-/// </summary>
 public class CombatManager : MonoBehaviour
 {
     [Header("UI 引用")]
@@ -13,12 +9,15 @@ public class CombatManager : MonoBehaviour
     public TMP_Text apText;
     public TMP_Text playerHPText;
     public TMP_Text blockText;
-    public GameObject victoryPanel;   // 胜利按钮，默认隐藏
+    public GameObject victoryPanel;
+    public GameObject defeatPanel;
 
     [Header("战斗数值")]
     public int enemyHP = 100;
+    public int enemyAttack = 8;     // 敌人每回合打你多少
     public int maxAP = 3;
     public int playerHP = 100;
+    public int maxPlayerHP = 100;
 
     int _currentAP;
     int _block;
@@ -28,69 +27,94 @@ public class CombatManager : MonoBehaviour
         _currentAP = maxAP;
         _block = 0;
         victoryPanel.SetActive(false);
+        defeatPanel.SetActive(false);
         RefreshUI();
     }
 
-    // ===== 三个卡牌按钮 =====
+    // ===== 三张牌 =====
 
-    // 猛刷：2 费打 14
     public void OnClick_MengShua()
     {
-        if (_currentAP < 2 || enemyHP <= 0) return;
+        if (_currentAP < 2 || enemyHP <= 0 || playerHP <= 0) return;
         _currentAP -= 2;
         enemyHP = Mathf.Max(0, enemyHP - 14);
         RefreshUI();
         CheckEnemyDead();
     }
 
-    // 投洗抹布：0 费加 3 格挡
     public void OnClick_TouXiMaBu()
     {
-        if (enemyHP <= 0) return;
+        if (enemyHP <= 0 || playerHP <= 0) return;
         _block += 3;
         RefreshUI();
     }
 
-    // 坚挺腰板：1 费加 8 格挡
     public void OnClick_JianTingYaoBan()
     {
-        if (_currentAP < 1 || enemyHP <= 0) return;
+        if (_currentAP < 1 || enemyHP <= 0 || playerHP <= 0) return;
         _currentAP -= 1;
         _block += 8;
         RefreshUI();
     }
 
-    // 结束回合：回行动点、清格挡
+    // ===== 结束回合：敌人打你 =====
+
     public void OnClick_EndTurn()
     {
-        if (enemyHP <= 0) return;
-        _block = 0;
+        if (enemyHP <= 0 || playerHP <= 0) return;
+
+        // 敌人攻击，先扣格挡
+        int damage = enemyAttack;
+        if (_block > 0)
+        {
+            int absorbed = Mathf.Min(_block, damage);
+            _block -= absorbed;
+            damage -= absorbed;
+        }
+
+        // 剩下的伤害扣血
+        playerHP = Mathf.Max(0, playerHP - damage);
+
+        // 回行动点
         _currentAP = maxAP;
         RefreshUI();
+
+        CheckPlayerDead();
     }
 
-    // 胜利后回 Boot
+    // ===== 胜负 =====
+
     public void OnClick_ReturnToBoot()
     {
         SceneManager.LoadScene("Boot");
     }
-
-    // ===== 内部 =====
 
     void CheckEnemyDead()
     {
         if (enemyHP <= 0)
         {
             victoryPanel.SetActive(true);
-            GameEvents.RaiseCombatVictory();
+            // 战斗结束扣 30 分钟
+            if (TimeManager.Instance != null)
+            {
+                TimeManager.Instance.SpendTime(30f);
+            }
+        }
+    }
+
+    void CheckPlayerDead()
+    {
+        if (playerHP <= 0)
+        {
+            defeatPanel.SetActive(true);
         }
     }
 
     void RefreshUI()
     {
-        enemyHPText.text = "敌人  " + enemyHP;
-        apText.text = "行动点  " + _currentAP;
-        playerHPText.text = "体力  " + playerHP;
-        blockText.text = "格挡  " + _block;
+        enemyHPText.text = "enemy HP:" + enemyHP;
+        apText.text = "AP:" + _currentAP;
+        playerHPText.text = "PlayerHP:" + playerHP + "/" + maxPlayerHP;
+        blockText.text = "Block:" + _block;
     }
 }
