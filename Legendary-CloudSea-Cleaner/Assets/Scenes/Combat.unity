@@ -937,6 +937,18 @@ MonoBehaviour:
   maxAP: 3
   playerHP: 100
   maxPlayerHP: 100
+  cardsPerTurn: 3
+  startingDeck:
+  - {fileID: 11400000, guid: b78335a8e695c9e45872d1831f4192db, type: 2}
+  - {fileID: 11400000, guid: 68cde0306d0efca4f8c6052ed33520d1, type: 2}
+  - {fileID: 11400000, guid: 9186dadcce8dbaf489204332a7da0250, type: 2}
+  - {fileID: 11400000, guid: b78335a8e695c9e45872d1831f4192db, type: 2}
+  - {fileID: 11400000, guid: 68cde0306d0efca4f8c6052ed33520d1, type: 2}
+  - {fileID: 11400000, guid: 9186dadcce8dbaf489204332a7da0250, type: 2}
+  handButtons:
+  - {fileID: 911738576}
+  - {fileID: 1527165865}
+  - {fileID: 201303010}
 --- !u!4 &1042877691
 Transform:
   m_ObjectHideFlags: 0

@@ -3,26 +3,25 @@ using TMPro;
 
 public class CardButton : MonoBehaviour
 {
-    public CardData card;                  // 拖卡牌资产
-    public CombatManager combatManager;    // 拖 CombatManager
-    public TMP_Text buttonText;            // 拖按钮上的文字
+    public CardData card;
+    public CombatManager combatManager;
+    public TMP_Text buttonText;
 
-    void Start()
+    public void SetCard(CardData newCard, CombatManager cm)
     {
-        RefreshDisplay();
+        card = newCard;
+        combatManager = cm;
+        if (buttonText != null && card != null)
+        {
+            buttonText.text = card.description;
+        }
     }
 
     public void OnClick()
     {
-        combatManager.PlayCard(card);
-        RefreshDisplay();
-    }
-
-    void RefreshDisplay()
-    {
-        if (card != null && buttonText != null)
+        if (combatManager != null && card != null)
         {
-            buttonText.text = card.description;
+            combatManager.PlayCard(card);
         }
     }
 }
