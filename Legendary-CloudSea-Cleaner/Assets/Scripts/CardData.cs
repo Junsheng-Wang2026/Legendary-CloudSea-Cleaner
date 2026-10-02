@@ -3,9 +3,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewCard", menuName = "Cleaner/Card Data")]
 public class CardData : ScriptableObject
 {
-    public string cardName;        // ÅÆÃû
-    public int cost;               // ·ÑÓÃ
-    public int damage;             // ´ò¶àÉÙÑª£¬0 = ²»´ò
-    public int block;              // ¼Ó¶àÉÙ¸ñµ²£¬0 = ²»¼Ó
-    [TextArea] public string description;  // °´Å¥ÉÏÏÔÊ¾µÄ×Ö
+    public string cardName;        // ï¿½ï¿½ï¿½ï¿½
+    public int cost;               // ï¿½ï¿½ï¿½ï¿½
+    public int damage;             // ï¿½ï¿½ï¿½ï¿½ï¿½Ñªï¿½ï¿½0 = ï¿½ï¿½ï¿½ï¿½
+    public int block; 
+    public Sprite frame;             // ï¿½Ó¶ï¿½ï¿½Ù¸ñµ²£ï¿½0 = ï¿½ï¿½ï¿½ï¿½
+    [TextArea] public string description;  // ï¿½ï¿½Å¥ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½
 }
