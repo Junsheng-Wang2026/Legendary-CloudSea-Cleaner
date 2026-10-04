@@ -947,6 +947,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b78335a8e695c9e45872d1831f4192db, type: 2}
   - {fileID: 11400000, guid: 68cde0306d0efca4f8c6052ed33520d1, type: 2}
   - {fileID: 11400000, guid: 9186dadcce8dbaf489204332a7da0250, type: 2}
+  rewardCards:
+  - {fileID: 11400000, guid: b78335a8e695c9e45872d1831f4192db, type: 2}
+  - {fileID: 11400000, guid: 68cde0306d0efca4f8c6052ed33520d1, type: 2}
+  - {fileID: 11400000, guid: 9186dadcce8dbaf489204332a7da0250, type: 2}
   handButtons:
   - {fileID: 911738576}
   - {fileID: 1527165865}
@@ -2260,6 +2264,7 @@ GameObject:
   - component: {fileID: 1843482099}
   - component: {fileID: 1843482098}
   - component: {fileID: 1843482097}
+  - component: {fileID: 1843482101}
   m_Layer: 5
   m_Name: DefaultBtn
   m_TagString: Untagged
@@ -2311,9 +2316,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1042877690}
-        m_TargetAssemblyTypeName: CombatManager, Assembly-CSharp
-        m_MethodName: OnClick_ReturnToBoot
+      - m_Target: {fileID: 1843482101}
+        m_TargetAssemblyTypeName: ReturnToMenu, Assembly-CSharp
+        m_MethodName: LoadMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2381,6 +2386,18 @@ RectTransform:
   m_AnchoredPosition: {x: 6, y: 46.9}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1843482101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843482096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 241c0e531583bc644bfea3b62ff546c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1849882399
 GameObject:
   m_ObjectHideFlags: 0

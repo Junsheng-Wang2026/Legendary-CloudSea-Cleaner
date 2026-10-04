@@ -1,13 +1,19 @@
 using UnityEngine;
+using System.Collections.Generic;
 
-/// <summary>
-/// 全局入口。挂在 Boot 场景里那个叫 GameManager 的空物体上。
-/// 现在只负责保证自己 DontDestroyOnLoad，以后要加音频管理器、存档管理器都往这儿挂。
-/// 注意：TimeManager 自己也是单例，挂在同一个物体上就行，不要重复建。
-/// </summary>
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+
+    [Header("全局玩家状态")]
+    public int maxHP = 100;
+    public int currentHP = 100;
+
+    [Header("战斗标记")]
+    public bool isBossFight = false;
+
+    [Header("全局牌组")]
+    public List<CardData> playerDeck = new List<CardData>();
 
     void Awake()
     {

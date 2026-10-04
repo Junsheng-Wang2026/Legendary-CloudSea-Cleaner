@@ -24,6 +24,9 @@ public class CombatManager : MonoBehaviour
     [Header("牌组")]
     public List<CardData> startingDeck = new List<CardData>();  // 拖初始牌组
 
+    [Header("奖励牌池")]
+    public List<CardData> rewardCards = new List<CardData>();  // 拖几张可奖励的牌
+
     [Header("手牌按钮")]
     public CardButton[] handButtons;  // 拖 Card1, Card2, Card3
 
@@ -41,8 +44,28 @@ public class CombatManager : MonoBehaviour
         victoryPanel.SetActive(false);
         defeatPanel.SetActive(false);
 
-        // 初始化牌组
-        _drawPile = new List<CardData>(startingDeck);
+        // BOSS 战：敌人 300 血，攻击 15
+        if (GameManager.Instance != null && GameManager.Instance.isBossFight)
+        {
+            enemyHP = 300;
+            enemyAttack = 15;
+            GameManager.Instance.isBossFight = false;  // 打完重置标记
+        }
+
+        // 初始化牌组：从全局牌组读
+        if (GameManager.Instance != null)
+        {
+            if (GameManager.Instance.playerDeck.Count == 0)
+            {
+                // 第一次进战斗，把 startingDeck 复制到全局牌组
+                GameManager.Instance.playerDeck = new List<CardData>(startingDeck);
+            }
+            _drawPile = new List<CardData>(GameManager.Instance.playerDeck);
+        }
+        else
+        {
+            _drawPile = new List<CardData>(startingDeck);
+        }
         Shuffle(_drawPile);
 
         // 抽第一回合的牌
@@ -166,6 +189,14 @@ public class CombatManager : MonoBehaviour
             if (TimeManager.Instance != null)
             {
                 TimeManager.Instance.SpendTime(30f);
+            }
+
+            // 给一张奖励牌加到全局牌组
+            if (rewardCards.Count > 0 && GameManager.Instance != null)
+            {
+                CardData reward = rewardCards[Random.Range(0, rewardCards.Count)];
+                GameManager.Instance.playerDeck.Add(reward);
+                Debug.Log("获得奖励牌: " + reward.cardName);
             }
         }
     }
