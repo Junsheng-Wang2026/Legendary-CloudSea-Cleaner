@@ -7,6 +7,7 @@ public class CombatManager : MonoBehaviour
 {
     [Header("UI 引用")]
     public TMP_Text enemyHPText;
+    public TMP_Text enemyIntentText;
     public TMP_Text apText;
     public TMP_Text playerHPText;
     public TMP_Text blockText;
@@ -30,6 +31,14 @@ public class CombatManager : MonoBehaviour
     [Header("手牌按钮")]
     public CardButton[] handButtons;  // 拖 Card1, Card2, Card3
 
+    [Header("遗物")]
+    public RelicData equippedRelic;  // 拖一个测试遗物
+
+    public enum EnemyIntent { Attack, Defend, Buff, Idle }
+    EnemyIntent _currentIntent;
+    int _enemyBlock;
+    int _buffAttack = 0;  // 本回合buff加的攻击，打完清零
+
     List<CardData> _drawPile = new List<CardData>();
     List<CardData> _hand = new List<CardData>();
     List<CardData> _discardPile = new List<CardData>();
@@ -43,6 +52,13 @@ public class CombatManager : MonoBehaviour
         _block = 0;
         victoryPanel.SetActive(false);
         defeatPanel.SetActive(false);
+
+        // 从全局读血量
+        if (GameManager.Instance != null)
+        {
+            playerHP = GameManager.Instance.currentHP;
+            maxPlayerHP = GameManager.Instance.maxHP;
+        }
 
         // BOSS 战：敌人 300 血，攻击 15
         if (GameManager.Instance != null && GameManager.Instance.isBossFight)
@@ -69,7 +85,13 @@ public class CombatManager : MonoBehaviour
         Shuffle(_drawPile);
 
         // 抽第一回合的牌
-        DrawCards(cardsPerTurn);
+        int startDraw = cardsPerTurn;
+        if (equippedRelic != null && equippedRelic.effect == RelicData.EffectType.ExtraDraw)
+        {
+            startDraw += equippedRelic.value;
+        }
+        DrawCards(startDraw);
+        PickNewIntent();
         RefreshUI();
     }
 
@@ -137,7 +159,14 @@ public class CombatManager : MonoBehaviour
 
         if (card.damage > 0)
         {
-            enemyHP = Mathf.Max(0, enemyHP - card.damage);
+            int dmg = card.damage;
+            if (_enemyBlock > 0)
+            {
+                int absorbed = Mathf.Min(_enemyBlock, dmg);
+                _enemyBlock -= absorbed;
+                dmg -= absorbed;
+            }
+            enemyHP = Mathf.Max(0, enemyHP - dmg);
         }
         if (card.block > 0)
         {
@@ -159,21 +188,54 @@ public class CombatManager : MonoBehaviour
         _discardPile.AddRange(_hand);
         _hand.Clear();
 
-        // 敌人打你
-        int damage = enemyAttack;
-        if (_block > 0)
+        // 敌人按意图行动
+        if (_currentIntent == EnemyIntent.Attack)
         {
-            int absorbed = Mathf.Min(_block, damage);
-            _block -= absorbed;
-            damage -= absorbed;
+            int damage = enemyAttack + _buffAttack;
+            _buffAttack = 0;  // 打完清零
+            if (_block > 0)
+            {
+                int absorbed = Mathf.Min(_block, damage);
+                _block -= absorbed;
+                damage -= absorbed;
+            }
+            playerHP = Mathf.Max(0, playerHP - damage);
         }
-        playerHP = Mathf.Max(0, playerHP - damage);
+        else if (_currentIntent == EnemyIntent.Defend)
+        {
+            _enemyBlock += 5;
+        }
+        else if (_currentIntent == EnemyIntent.Buff)
+        {
+            _buffAttack = 7;  // 下回合攻击+7
+        }
+        // Idle: 什么都不做
 
         // 回 AP + 抽新牌
         _currentAP = maxAP;
-        DrawCards(cardsPerTurn);
+        int drawCount = cardsPerTurn;
+        if (equippedRelic != null && equippedRelic.effect == RelicData.EffectType.ExtraDraw)
+        {
+            drawCount += equippedRelic.value;
+        }
+        DrawCards(drawCount);
+
+        PickNewIntent();
         RefreshUI();
         CheckPlayerDead();
+    }
+
+    void PickNewIntent()
+    {
+        // 如果刚buff过，下回合一定攻击
+        if (_buffAttack > 0)
+        {
+            _currentIntent = EnemyIntent.Attack;
+            return;
+        }
+        // 随机选一个意图
+        int r = Random.Range(0, 4);
+        _currentIntent = (EnemyIntent)r;
     }
 
     public void OnClick_ReturnToBoot()
@@ -212,8 +274,29 @@ public class CombatManager : MonoBehaviour
     void RefreshUI()
     {
         enemyHPText.text = "enemy HP:" + enemyHP;
+        // 显示意图
+        switch (_currentIntent)
+        {
+            case EnemyIntent.Attack:
+                enemyIntentText.text = "Intent: Attack " + (enemyAttack + _buffAttack);
+                break;
+            case EnemyIntent.Defend:
+                enemyIntentText.text = "Intent: Defend " + _enemyBlock;
+                break;
+            case EnemyIntent.Buff:
+                enemyIntentText.text = "Intent: Buff -> next +7";
+                break;
+            case EnemyIntent.Idle:
+                enemyIntentText.text = "Intent: Idle";
+                break;
+        }
         apText.text = "AP:" + _currentAP;
         playerHPText.text = "PlayerHP:" + playerHP + "/" + maxPlayerHP;
         blockText.text = "Block:" + _block;
+
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.currentHP = playerHP;
+        }
     }
 }
