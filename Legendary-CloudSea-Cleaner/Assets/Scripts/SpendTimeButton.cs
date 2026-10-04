@@ -10,7 +10,7 @@ public class SpendTimeButton : MonoBehaviour
     {
         if (TimeManager.Instance != null)
         {
-            TimeManager.Instance.SpendTime(1f);
+            TimeManager.Instance.SpendTime(20f);
         }
     }
 }

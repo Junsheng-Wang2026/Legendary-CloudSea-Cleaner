@@ -15,6 +15,10 @@ public class GameManager : MonoBehaviour
     [Header("全局牌组")]
     public List<CardData> playerDeck = new List<CardData>();
 
+    [Header("高度进度")]
+    public int currentDepth = 0;
+    public int checkpointDepth = 100;  // 到检查点需要的高度
+
     void Awake()
     {
         if (Instance != null && Instance != this)

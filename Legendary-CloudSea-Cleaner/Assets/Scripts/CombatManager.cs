@@ -211,6 +211,9 @@ public class CombatManager : MonoBehaviour
         }
         // Idle: 什么都不做
 
+        // 回合结束清空玩家护甲
+        _block = 0;
+
         // 回 AP + 抽新牌
         _currentAP = maxAP;
         int drawCount = cardsPerTurn;
