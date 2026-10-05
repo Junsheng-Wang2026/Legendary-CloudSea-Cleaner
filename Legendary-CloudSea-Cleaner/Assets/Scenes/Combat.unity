@@ -654,6 +654,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9186dadcce8dbaf489204332a7da0250, type: 2}
   handLayout: {fileID: 1512795945}
   equippedRelic: {fileID: 0}
+  statusCard: {fileID: 11400000, guid: 57214fab91258a64a9d336741ed1e7ad, type: 2}
 --- !u!4 &1042877691
 Transform:
   m_ObjectHideFlags: 0

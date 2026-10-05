@@ -34,6 +34,9 @@ public class CombatManager : MonoBehaviour
     [Header("遗物")]
     public RelicData equippedRelic;  // 拖一个测试遗物
 
+    [Header("状态牌")]
+    public CardData statusCard;  // 敌人给的debuff牌
+
     public enum EnemyIntent { Attack, Defend, Buff, Idle }
     EnemyIntent _currentIntent;
     int _enemyBlock;
@@ -143,6 +146,7 @@ public class CombatManager : MonoBehaviour
     public void PlayCard(CardData card)
     {
         if (enemyHP <= 0 || playerHP <= 0) return;
+        if (card.cardType == CardData.CardType.Status) return;  // 状态牌不可打出
         if (_currentAP < card.cost) return;
         if (!_hand.Contains(card)) return;
 
@@ -193,6 +197,11 @@ public class CombatManager : MonoBehaviour
                 damage -= absorbed;
             }
             playerHP = Mathf.Max(0, playerHP - damage);
+            // 30%概率给玩家塞一张状态牌
+            if (statusCard != null && Random.value < 0.3f)
+            {
+                _discardPile.Add(statusCard);
+            }
         }
         else if (_currentIntent == EnemyIntent.Defend)
         {
