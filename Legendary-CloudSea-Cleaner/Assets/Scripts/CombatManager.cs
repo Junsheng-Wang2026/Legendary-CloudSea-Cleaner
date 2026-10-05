@@ -15,12 +15,12 @@ public class CombatManager : MonoBehaviour
     public GameObject defeatPanel;
 
     [Header("战斗数值")]
-    public int enemyHP = 100;
-    public int enemyAttack = 8;
+    public int enemyHP = 35;
+    public int enemyAttack = 7;
     public int maxAP = 3;
     public int playerHP = 100;
     public int maxPlayerHP = 100;
-    public int cardsPerTurn = 3;
+    public int cardsPerTurn = 5;
 
     [Header("牌组")]
     public List<CardData> startingDeck = new List<CardData>();  // 拖初始牌组
@@ -28,8 +28,8 @@ public class CombatManager : MonoBehaviour
     [Header("奖励牌池")]
     public List<CardData> rewardCards = new List<CardData>();  // 拖几张可奖励的牌
 
-    [Header("手牌按钮")]
-    public CardButton[] handButtons;  // 拖 Card1, Card2, Card3
+    [Header("手牌布局")]
+    public HandLayout handLayout;  // 拖手牌父物体
 
     [Header("遗物")]
     public RelicData equippedRelic;  // 拖一个测试遗物
@@ -120,17 +120,10 @@ public class CombatManager : MonoBehaviour
 
     void UpdateHandUI()
     {
-        for (int i = 0; i < handButtons.Length; i++)
+        if (handLayout != null)
         {
-            if (i < _hand.Count)
-            {
-                handButtons[i].gameObject.SetActive(true);
-                handButtons[i].SetCard(_hand[i], this);
-            }
-            else
-            {
-                handButtons[i].gameObject.SetActive(false);
-            }
+            handLayout.Init(this);
+            handLayout.LayoutHand(_hand);
         }
     }
 

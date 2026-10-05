@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: Card_Hold_Firm
   m_EditorClassIdentifier: 
   cardName: Hold Firm
+  cardType: 0
+  rarity: 0
   cost: 1
   damage: 0
   block: 5
-  frame: {fileID: 21300000, guid: 2737fef6d360af64a9e61c122afbeea1, type: 3}
+  cardImage: {fileID: 21300000, guid: 2737fef6d360af64a9e61c122afbeea1, type: 3}
   description: Hold Firm 1/0/5
