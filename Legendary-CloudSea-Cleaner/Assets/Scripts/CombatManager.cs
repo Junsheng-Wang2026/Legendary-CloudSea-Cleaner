@@ -13,6 +13,8 @@ public class CombatManager : MonoBehaviour
     public TMP_Text blockText;
     public GameObject victoryPanel;
     public GameObject defeatPanel;
+    public HealthBar playerHealthBar;   // 玩家血条
+    public HealthBar enemyHealthBar;    // 敌人血条
 
     [Header("战斗数值")]
     public int enemyHP = 35;
@@ -143,21 +145,52 @@ public class CombatManager : MonoBehaviour
 
     // ===== 打牌 =====
 
+    bool _lostHPThisTurn = false;  // 本回合是否损失过生命值
+
     public void PlayCard(CardData card)
     {
         if (enemyHP <= 0 || playerHP <= 0) return;
-        if (card.cardType == CardData.CardType.Status) return;  // 状态牌不可打出
+        if (card.cardType == CardType.Status) return;  // 状态牌不可打出
         if (_currentAP < card.cost) return;
         if (!_hand.Contains(card)) return;
 
         _currentAP -= card.cost;
         _hand.Remove(card);
-        _discardPile.Add(card);
 
+        // 消耗牌不进弃牌堆
+        if (!card.exhaust)
+        {
+            _discardPile.Add(card);
+        }
+
+        // 自损
+        if (card.selfDamage > 0)
+        {
+            playerHP = Mathf.Max(0, playerHP - card.selfDamage);
+            _lostHPThisTurn = true;
+        }
+
+        // 伤害（多次攻击）
         if (card.damage > 0)
         {
-            int dmg = card.damage;
-            if (_enemyBlock > 0)
+            for (int i = 0; i < card.attackTimes; i++)
+            {
+                int dmg = card.damage;
+                if (!card.ignoreBlock && _enemyBlock > 0)
+                {
+                    int absorbed = Mathf.Min(_enemyBlock, dmg);
+                    _enemyBlock -= absorbed;
+                    dmg -= absorbed;
+                }
+                enemyHP = Mathf.Max(0, enemyHP - dmg);
+            }
+        }
+
+        // 条件伤害（本回合损失过生命值）
+        if (_lostHPThisTurn && card.conditionalDamage > 0)
+        {
+            int dmg = card.conditionalDamage;
+            if (!card.ignoreBlock && _enemyBlock > 0)
             {
                 int absorbed = Mathf.Min(_enemyBlock, dmg);
                 _enemyBlock -= absorbed;
@@ -165,9 +198,31 @@ public class CombatManager : MonoBehaviour
             }
             enemyHP = Mathf.Max(0, enemyHP - dmg);
         }
+
+        // 格挡
         if (card.block > 0)
         {
             _block += card.block;
+        }
+        if (_lostHPThisTurn && card.conditionalBlock > 0)
+        {
+            _block += card.conditionalBlock;
+        }
+
+        // 抽牌
+        if (card.drawCards > 0)
+        {
+            DrawCards(card.drawCards);
+        }
+        if (_lostHPThisTurn && card.conditionalDraw > 0)
+        {
+            DrawCards(card.conditionalDraw);
+        }
+
+        // 回能
+        if (card.gainEnergy > 0)
+        {
+            _currentAP += card.gainEnergy;
         }
 
         UpdateHandUI();
@@ -184,6 +239,8 @@ public class CombatManager : MonoBehaviour
         // 手牌全弃
         _discardPile.AddRange(_hand);
         _hand.Clear();
+
+        _lostHPThisTurn = false;  // 重置本回合损失血量标记
 
         // 敌人按意图行动
         if (_currentIntent == EnemyIntent.Attack)
@@ -279,6 +336,8 @@ public class CombatManager : MonoBehaviour
     void RefreshUI()
     {
         enemyHPText.text = "enemy HP:" + enemyHP;
+        if (enemyHealthBar != null) enemyHealthBar.SetHealth(enemyHP, 35);
+        if (playerHealthBar != null) playerHealthBar.SetHealth(playerHP, maxPlayerHP);
         // 显示意图
         switch (_currentIntent)
         {
@@ -296,7 +355,7 @@ public class CombatManager : MonoBehaviour
                 break;
         }
         apText.text = "AP:" + _currentAP;
-        playerHPText.text = "PlayerHP:" + playerHP + "/" + maxPlayerHP;
+        playerHPText.text = playerHP + "/" + maxPlayerHP;
         blockText.text = "Block:" + _block;
 
         if (GameManager.Instance != null)
