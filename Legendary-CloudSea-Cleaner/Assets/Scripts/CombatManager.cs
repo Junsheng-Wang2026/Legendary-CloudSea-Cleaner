@@ -15,6 +15,7 @@ public class CombatManager : MonoBehaviour
     public GameObject defeatPanel;
     public HealthBar playerHealthBar;   // 玩家血条
     public HealthBar enemyHealthBar;    // 敌人血条
+    public CardRewardPanel rewardPanel; // 三选一奖励面板
 
     [Header("战斗数值")]
     public int enemyHP = 35;
@@ -309,20 +310,27 @@ public class CombatManager : MonoBehaviour
     {
         if (enemyHP <= 0)
         {
-            victoryPanel.SetActive(true);
             if (TimeManager.Instance != null)
             {
                 TimeManager.Instance.SpendTime(30f);
             }
 
-            // 给一张奖励牌加到全局牌组
-            if (rewardCards.Count > 0 && GameManager.Instance != null)
+            // 三选一奖励面板
+            if (rewardPanel != null && rewardCards.Count > 0)
             {
-                CardData reward = rewardCards[Random.Range(0, rewardCards.Count)];
-                GameManager.Instance.playerDeck.Add(reward);
-                Debug.Log("获得奖励牌: " + reward.cardName);
+                rewardPanel.ShowRewards(rewardCards);
+            }
+            else
+            {
+                victoryPanel.SetActive(true);
             }
         }
+    }
+
+    // 奖励选完/跳过后显示胜利面板
+    public void ShowVictoryAfterReward()
+    {
+        victoryPanel.SetActive(true);
     }
 
     void CheckPlayerDead()
@@ -355,7 +363,7 @@ public class CombatManager : MonoBehaviour
                 break;
         }
         apText.text = "AP:" + _currentAP;
-        playerHPText.text = playerHP + "/" + maxPlayerHP;
+        playerHPText.text = "PlayerHP:" + playerHP + "/" + maxPlayerHP;
         blockText.text = "Block:" + _block;
 
         if (GameManager.Instance != null)

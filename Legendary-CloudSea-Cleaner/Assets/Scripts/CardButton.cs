@@ -9,6 +9,7 @@ public class CardButton : MonoBehaviour, IPointerEnterHandler
     public CombatManager combatManager;
     public TMP_Text buttonText;
     public Image cardImage;  // 卡牌图片
+    public bool enableHoverRaise = true;  // 是否允许悬停置顶（奖励面板里关掉）
 
     public void SetCard(CardData newCard, CombatManager cm)
     {
@@ -27,6 +28,7 @@ public class CardButton : MonoBehaviour, IPointerEnterHandler
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if (!enableHoverRaise) return;
         transform.SetAsLastSibling();  // 悬停时置顶，防止点到旁边的牌
     }
 
