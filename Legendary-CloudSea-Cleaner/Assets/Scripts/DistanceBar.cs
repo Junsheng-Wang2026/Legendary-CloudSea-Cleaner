@@ -3,12 +3,16 @@ using UnityEngine.UI;
 using TMPro;
 
 // 主场景距离进度条（竖向蓝色，Fill 从底部匀速增长）
-// 文本显示“距离本章检查点 XXM”；完成一个事件调用 AdvanceEvent() 推进一段
+// 文本显示“距离本章检查点 XXM”；完成一个事件调用 AdvanceEvent() 推进一段。
+// 总距离与各段距离由 ChapterDirector 在章节开始时通过 ConfigureByChapter 写入。
 public class DistanceBar : MonoBehaviour
 {
-    [Header("距离配置（米）")]
+    [Header("章节数据（一般留空，由 ChapterDirector 喂；单场景测试可手动拖）")]
+    public ChapterData chapterData;
+
+    [Header("距离配置（米，一般由章节数据自动写入，也可手填兜底）")]
     public int checkpointDistance = 100;          // 到本章检查点总距离
-    public int[] eventDistances = { 20, 20, 20, 20, 20 }; // 每起事件之间的距离，按事件序号依次取
+    public int[] eventDistances = { 20, 20, 20, 20, 20 }; // 每个节点段的距离，按节点序号依次取
     public int fallbackDistance = 20;             // 数组取完后的默认每段距离
 
     [Header("动画")]
@@ -34,21 +38,47 @@ public class DistanceBar : MonoBehaviour
                 _fullHeight = GetComponent<RectTransform>().rect.height;
         }
 
+        if (chapterData != null)
+            ConfigureByChapter(chapterData);
+
         if (GameManager.Instance != null)
         {
             GameManager.Instance.checkpointDepth = checkpointDistance;
 
-            // 从战斗胜利返回：先结算一次待推进距离
-            if (GameManager.Instance.pendingDistanceAdvance)
-            {
-                GameManager.Instance.pendingDistanceAdvance = false;
-                AdvanceEvent();
-            }
-
+            // 章节导演流程：距离在下降动画段已推进，战斗/商店返回后只恢复显示，不再补推
             _displayedDepth = GameManager.Instance.currentDepth;
             _targetDepth = GameManager.Instance.currentDepth;
         }
 
+        UpdateBar(_displayedDepth);
+    }
+
+    // 按章节资产配置：总距离=各节点段距之和，分段=各节点段距
+    [ContextMenu("Apply Chapter Data")]
+    public void ConfigureByChapter(ChapterData chapter)
+    {
+        if (chapter == null) return;
+
+        checkpointDistance = Mathf.Max(1, Mathf.RoundToInt(chapter.GetTotalDistance()));
+
+        float[] segs = chapter.GetSegmentDistances();
+        eventDistances = new int[segs.Length];
+        for (int i = 0; i < segs.Length; i++)
+            eventDistances[i] = Mathf.RoundToInt(segs[i]);
+
+        if (GameManager.Instance != null)
+            GameManager.Instance.checkpointDepth = checkpointDistance;
+    }
+
+    // 切场景返回后：按 GameManager 当前深度立即同步显示（不做动画、不推进）
+    public void RefreshToCurrentDepth()
+    {
+        if (GameManager.Instance == null) return;
+        if (fill != null && _fullHeight <= 0)
+            _fullHeight = GetComponent<RectTransform>().rect.height;
+
+        _displayedDepth = GameManager.Instance.currentDepth;
+        _targetDepth = GameManager.Instance.currentDepth;
         UpdateBar(_displayedDepth);
     }
 
@@ -62,7 +92,7 @@ public class DistanceBar : MonoBehaviour
         }
     }
 
-    // 完成一起事件后调用：按当前事件序号推进对应距离
+    // 开始前往下一节点时调用：按当前节点序号推进对应距离（与楼层下降动画同时）
     public void AdvanceEvent()
     {
         if (GameManager.Instance == null) return;

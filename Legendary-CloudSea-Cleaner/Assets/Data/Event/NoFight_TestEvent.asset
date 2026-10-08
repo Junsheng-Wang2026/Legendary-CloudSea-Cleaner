@@ -10,18 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3eb5da06fb17dd044a71ed1f380cebad, type: 3}
-  m_Name: Event_Test
+  m_Name: NoFight_TestEvent
   m_EditorClassIdentifier: 
-  eventName: TestEvent
-  description: Meeting f*cking bird.How to do?
-  eventType: 1
-  option1Text: Fight
-  option1IsFight: 1
-  option1TimeCost: 30
+  eventName: 
+  description: 
+  eventType: 0
+  enemy: {fileID: 0}
+  enemyPool: {fileID: 0}
+  forceFight: 0
+  advanceDistance: 1
+  option1Text: 
+  option1IsFight: 0
+  option1TimeCost: 0
   option1HPChange: 0
   option1Reward: {fileID: 0}
-  option2Text: Run
+  option2Text: 
   option2IsFight: 0
-  option2TimeCost: 20
-  option2HPChange: -5
+  option2TimeCost: 0
+  option2HPChange: 0
   option2Reward: {fileID: 0}

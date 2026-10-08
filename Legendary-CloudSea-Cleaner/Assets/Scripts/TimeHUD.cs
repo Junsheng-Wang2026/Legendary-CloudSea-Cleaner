@@ -45,7 +45,7 @@ public class TimeHUD : MonoBehaviour
     {
         if (timeText != null)
         {
-            timeText.text = "时间  " + TimeManager.Format(minutes);
+            timeText.text = TimeManager.Format(minutes);
         }
     }
 }

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
 
@@ -16,6 +17,12 @@ public class CombatManager : MonoBehaviour
     public HealthBar playerHealthBar;   // 玩家血条
     public HealthBar enemyHealthBar;    // 敌人血条
     public CardRewardPanel rewardPanel; // 三选一奖励面板
+
+    [Header("敌人外观（按敌人资产自动更换）")]
+    public SpriteRenderer enemySpriteRenderer;  // 世界空间的敌人立绘
+    public Image enemyImage;                    // 如果敌人是 UI Image 就拖这个
+    public TMP_Text enemyNameText;              // 可选：敌人名字
+    public EnemyData enemyData;                 // 可选：单场景测试用敌人（没走事件入口时用）
 
     [Header("战斗数值")]
     public int enemyHP = 35;
@@ -45,6 +52,13 @@ public class CombatManager : MonoBehaviour
     int _enemyBlock;
     int _buffAttack = 0;  // 本回合buff加的攻击，打完清零
 
+    // 当前敌人的运行时数值（从 EnemyData 来，没资产时用下面默认值）
+    int _enemyMaxHP = 35;
+    int _defendAmount = 5;    // 防御意图加甲
+    int _buffAmount = 7;      // 蓄力意图下次加攻
+    float _statusChance = 0.3f; // 攻击塞状态牌概率
+    int _timeCost = 30;       // 击杀耗时（分钟）
+
     List<CardData> _drawPile = new List<CardData>();
     List<CardData> _hand = new List<CardData>();
     List<CardData> _discardPile = new List<CardData>();
@@ -66,12 +80,33 @@ public class CombatManager : MonoBehaviour
             maxPlayerHP = GameManager.Instance.maxHP;
         }
 
-        // BOSS 战：敌人 300 血，攻击 15
-        if (GameManager.Instance != null && GameManager.Instance.isBossFight)
+        // 确定本场敌人：优先全局传入（事件/敌人池/超时BOSS），否则用 Inspector 上的测试敌人
+        EnemyData data = null;
+        if (GameManager.Instance != null && GameManager.Instance.pendingEnemy != null)
         {
+            data = GameManager.Instance.pendingEnemy;
+            GameManager.Instance.pendingEnemy = null;  // 消费掉，避免残留
+        }
+        else if (enemyData != null)
+        {
+            data = enemyData;
+        }
+
+        if (data != null)
+        {
+            ApplyEnemy(data);
+        }
+        else if (GameManager.Instance != null && GameManager.Instance.isBossFight)
+        {
+            // 兜底：没配敌人资产时的默认 BOSS 数值
             enemyHP = 300;
             enemyAttack = 15;
-            GameManager.Instance.isBossFight = false;  // 打完重置标记
+            _enemyMaxHP = 300;
+            GameManager.Instance.isBossFight = false;
+        }
+        else
+        {
+            _enemyMaxHP = enemyHP;
         }
 
         // 初始化牌组：从全局牌组读
@@ -99,6 +134,25 @@ public class CombatManager : MonoBehaviour
         DrawCards(startDraw);
         PickNewIntent();
         RefreshUI();
+    }
+
+    // 按敌人资产刷新立绘、数值、血条上限与耗时
+    void ApplyEnemy(EnemyData d)
+    {
+        _enemyMaxHP = d.maxHP;
+        enemyHP = d.maxHP;
+        enemyAttack = d.attack;
+        _defendAmount = d.defendAmount;
+        _buffAmount = d.buffAmount;
+        _statusChance = d.statusChance;
+        _timeCost = d.timeCost;
+
+        if (d.icon != null)
+        {
+            if (enemySpriteRenderer != null) enemySpriteRenderer.sprite = d.icon;
+            if (enemyImage != null) enemyImage.sprite = d.icon;
+        }
+        if (enemyNameText != null) enemyNameText.text = d.enemyName;
     }
 
     // ===== 抽牌 =====
@@ -255,19 +309,19 @@ public class CombatManager : MonoBehaviour
                 damage -= absorbed;
             }
             playerHP = Mathf.Max(0, playerHP - damage);
-            // 30%概率给玩家塞一张状态牌
-            if (statusCard != null && Random.value < 0.3f)
+            // 按敌人配置的概率给玩家塞一张状态牌
+            if (statusCard != null && Random.value < _statusChance)
             {
                 _discardPile.Add(statusCard);
             }
         }
         else if (_currentIntent == EnemyIntent.Defend)
         {
-            _enemyBlock += 5;
+            _enemyBlock += _defendAmount;
         }
         else if (_currentIntent == EnemyIntent.Buff)
         {
-            _buffAttack = 7;  // 下回合攻击+7
+            _buffAttack = _buffAmount;  // 下回合攻击强化
         }
         // Idle: 什么都不做
 
@@ -312,7 +366,7 @@ public class CombatManager : MonoBehaviour
         {
             if (TimeManager.Instance != null)
             {
-                TimeManager.Instance.SpendTime(30f);
+                TimeManager.Instance.SpendTime(_timeCost);
             }
 
             // 三选一奖励面板
@@ -344,7 +398,7 @@ public class CombatManager : MonoBehaviour
     void RefreshUI()
     {
         enemyHPText.text = "enemy HP:" + enemyHP;
-        if (enemyHealthBar != null) enemyHealthBar.SetHealth(enemyHP, 35);
+        if (enemyHealthBar != null) enemyHealthBar.SetHealth(enemyHP, _enemyMaxHP);
         if (playerHealthBar != null) playerHealthBar.SetHealth(playerHP, maxPlayerHP);
         // 显示意图
         switch (_currentIntent)
@@ -356,7 +410,7 @@ public class CombatManager : MonoBehaviour
                 enemyIntentText.text = "Intent: Defend " + _enemyBlock;
                 break;
             case EnemyIntent.Buff:
-                enemyIntentText.text = "Intent: Buff -> next +7";
+                enemyIntentText.text = "Intent: Buff -> next +" + _buffAmount;
                 break;
             case EnemyIntent.Idle:
                 enemyIntentText.text = "Intent: Idle";

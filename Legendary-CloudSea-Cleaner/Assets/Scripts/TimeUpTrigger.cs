@@ -21,11 +21,23 @@ public class TimeUpTrigger : MonoBehaviour
 
     void OnTimeUp()
     {
-        // 标记为 BOSS 战，CombatManager 会读这个值
-        if (GameManager.Instance != null)
+        if (GameManager.Instance == null)
         {
-            GameManager.Instance.isBossFight = true;
+            SceneManager.LoadScene("Combat");
+            return;
         }
-        SceneManager.LoadScene("Combat");
+
+        // 打章节开始就确定好的本章 BOSS；无选项、不推进下降距离
+        if (GameManager.Instance.chapterBoss != null)
+        {
+            GameManager.Instance.EnterCombat(GameManager.Instance.chapterBoss, false);
+        }
+        else
+        {
+            // 兜底：没配本章 BOSS 资产时，退回旧的标记方式（CombatManager 用默认 BOSS 数值）
+            GameManager.Instance.isBossFight = true;
+            GameManager.Instance.pendingDistanceAdvance = false;
+            SceneManager.LoadScene("Combat");
+        }
     }
 }

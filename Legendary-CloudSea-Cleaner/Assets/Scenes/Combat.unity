@@ -555,6 +555,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fill: {fileID: 1526916694}
   hpText: {fileID: 764963283}
+  bindGameManager: 0
 --- !u!114 &183926971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1305,6 +1306,10 @@ MonoBehaviour:
   playerHealthBar: {fileID: 183926970}
   enemyHealthBar: {fileID: 1597771929}
   rewardPanel: {fileID: 180966144}
+  enemySpriteRenderer: {fileID: 0}
+  enemyImage: {fileID: 1843449939}
+  enemyNameText: {fileID: 0}
+  enemyData: {fileID: 0}
   enemyHP: 1
   enemyAttack: 8
   maxAP: 3
@@ -2358,6 +2363,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fill: {fileID: 1785165910}
   hpText: {fileID: 626681554}
+  bindGameManager: 0
 --- !u!114 &1597771930
 MonoBehaviour:
   m_ObjectHideFlags: 0
