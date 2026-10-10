@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 631e8fe870a4d1a4da042b4f1204e5d9, type: 3}
   m_Name: Relic_Sponge
   m_EditorClassIdentifier: 
-  relicName: Sponge
-  description: every return 1 more card
+  relicName: "\u6D77\u7EF5"
+  description: "\u6BCF\u56DE\u5408\u591A\u62BD1\u5F20\u724C"
   effect: 0
   value: 1

@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 799d3bc573b11e5419f1dd63cec73a22, type: 3}
+  m_Name: "INT_L05C_\u8C28\u614E\u64CD\u4F5C"
+  m_EditorClassIdentifier: 
+  cardName: "\u8C28\u614E\u64CD\u4F5C"
+  cardType: 2
+  rarity: 2
+  cost: 1
+  cardImage: {fileID: 21300000, guid: 13b0ed6ca1ba2cc4e8923b40a87e8ecc, type: 3}
+  description: "\u83B7\u5F976\u70B9\u683C\u6321\uFF0C\u6307\u5B9A\u4E00\u4F4D\u654C\u4EBA\u4E0B\u4E00\u56DE\u5408\u653B\u51FB\u4F24\u5BB3\u964D\u4F4E4\u70B9\u3002\u4E0B\u56DE\u5408\u6DFB\u52A01\u5F20\u4E34\u65F6\u62A4\u677F\u52A0\u5165\u624B\u724C"
+  damage: 0
+  attackTimes: 1
+  block: 6
+  drawCards: 0
+  gainEnergy: 0
+  selfDamage: 0
+  exhaust: 0
+  isTemp: 0
+  ignoreBlock: 0
+  applyWeak: 0
+  applyVulnerable: 0
+  conditionalDamage: 0
+  conditionalBlock: 0
+  conditionalDraw: 0
+  statusEffect: 0

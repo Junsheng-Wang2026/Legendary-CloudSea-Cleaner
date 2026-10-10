@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 799d3bc573b11e5419f1dd63cec73a22, type: 3}
+  m_Name: "STA_L03A_\u6655\u7729"
+  m_EditorClassIdentifier: 
+  cardName: "\u6655\u7729"
+  cardType: 3
+  rarity: 0
+  cost: 0
+  cardImage: {fileID: 21300000, guid: 7d6e47e3f59a2c440aed90d779bcc9b2, type: 3}
+  description: "\u62BD\u5230\u65F6\u6253\u51FA\u6B64\u724C\uFF0C\u5931\u53BB 1 \u80FD\u91CF\uFF0C\u5220\u9664\u8BE5\u724C"
+  damage: 0
+  attackTimes: 1
+  block: 0
+  drawCards: 0
+  gainEnergy: 0
+  selfDamage: 0
+  exhaust: 0
+  isTemp: 0
+  ignoreBlock: 0
+  applyWeak: 0
+  applyVulnerable: 0
+  conditionalDamage: 0
+  conditionalBlock: 0
+  conditionalDraw: 0
+  statusEffect: 3

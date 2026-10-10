@@ -80,8 +80,8 @@ public class TimePassPanel : MonoBehaviour
     {
         if (GameManager.Instance == null) return;
         if (lotteryLabel != null)
-            lotteryLabel.text = "Lottery " + GameManager.Instance.lotteryPoints + "/" + pointsNeeded;
+            lotteryLabel.text = UIText.Lottery + GameManager.Instance.lotteryPoints + "/" + pointsNeeded;
         if (removeLabel != null)
-            removeLabel.text = "Remove " + GameManager.Instance.removePoints + "/" + pointsNeeded;
+            removeLabel.text = UIText.Remove + GameManager.Instance.removePoints + "/" + pointsNeeded;
     }
 }

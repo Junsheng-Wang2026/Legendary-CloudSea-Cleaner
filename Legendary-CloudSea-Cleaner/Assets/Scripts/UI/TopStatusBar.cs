@@ -20,17 +20,17 @@ public class TopStatusBar : MonoBehaviour
         if (statusText == null || GameManager.Instance == null) return;
 
         if (GameManager.Instance.currentEventIndex <= 0)
-            statusText.text = "Chapter " + GameManager.Instance.chapter;
+            statusText.text = UIText.Chapter(GameManager.Instance.chapter);
         else
-            statusText.text = "Chapter " + GameManager.Instance.chapter
-                + " - Event " + GameManager.Instance.currentEventIndex;
+            statusText.text = UIText.ChapterEvent(GameManager.Instance.chapter,
+                GameManager.Instance.currentEventIndex);
     }
 
     // 楼层下降动画播放时调用：显示“下降中”
     public void SetDescending()
     {
         if (statusText != null && GameManager.Instance != null)
-            statusText.text ="Descending";
+            statusText.text = UIText.Descending;
     }
 
     // 事件楼层到位时调用：回到章与节显示
@@ -42,7 +42,7 @@ public class TopStatusBar : MonoBehaviour
     public void RefreshGold()
     {
         if (goldText != null && GameManager.Instance != null)
-            goldText.text = "Gold: " + GameManager.Instance.gold;
+            goldText.text = UIText.Gold + GameManager.Instance.gold;
     }
 
     // 事件/战斗获得或花费金币时调用

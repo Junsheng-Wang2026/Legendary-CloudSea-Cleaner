@@ -397,28 +397,28 @@ public class CombatManager : MonoBehaviour
 
     void RefreshUI()
     {
-        enemyHPText.text = "enemy HP:" + enemyHP;
+        enemyHPText.text = UIText.EnemyHP + enemyHP;
         if (enemyHealthBar != null) enemyHealthBar.SetHealth(enemyHP, _enemyMaxHP);
         if (playerHealthBar != null) playerHealthBar.SetHealth(playerHP, maxPlayerHP);
         // ÏÔÊ¾ÒâÍ¼
         switch (_currentIntent)
         {
             case EnemyIntent.Attack:
-                enemyIntentText.text = "Intent: Attack " + (enemyAttack + _buffAttack);
+                enemyIntentText.text = UIText.IntentAttack + (enemyAttack + _buffAttack);
                 break;
             case EnemyIntent.Defend:
-                enemyIntentText.text = "Intent: Defend " + _enemyBlock;
+                enemyIntentText.text = UIText.IntentDefend + _defendAmount;
                 break;
             case EnemyIntent.Buff:
-                enemyIntentText.text = "Intent: Buff -> next +" + _buffAmount;
+                enemyIntentText.text = UIText.IntentBuff + _buffAmount;
                 break;
             case EnemyIntent.Idle:
-                enemyIntentText.text = "Intent: Idle";
+                enemyIntentText.text = UIText.IntentIdle;
                 break;
         }
-        apText.text = "AP:" + _currentAP;
-        playerHPText.text = "PlayerHP:" + playerHP + "/" + maxPlayerHP;
-        blockText.text = "Block:" + _block;
+        apText.text = UIText.AP + _currentAP;
+        playerHPText.text = UIText.PlayerHP + playerHP + "/" + maxPlayerHP;
+        blockText.text = UIText.Block + _block;
 
         if (GameManager.Instance != null)
         {
