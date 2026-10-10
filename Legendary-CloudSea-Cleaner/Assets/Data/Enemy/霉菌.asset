@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6fbb3460b55b814f903bbf2003087e5, type: 3}
+  m_Name: "\u9709\u83CC"
+  m_EditorClassIdentifier: 
+  enemyName: Enemy
+  icon: {fileID: 0}
+  kind: 0
+  maxHP: 90
+  timeCost: 45
+  startPhase: 1
+  actionCycle:
+  - actionName: "\u51B2\u649E"
+    damage: 12
+    hits: 0
+    block: 0
+    charge: 0
+    permanentAttackGrowth: 0
+    inflictCards: []
+  - actionName: "\u589E\u6B96"
+    damage: 0
+    hits: 0
+    block: 8
+    charge: 0
+    permanentAttackGrowth: 1
+    inflictCards: []
+  - actionName: "\u9A9A\u6270"
+    damage: 0
+    hits: 0
+    block: 8
+    charge: 0
+    permanentAttackGrowth: 1
+    inflictCards:
+    - {fileID: 11400000, guid: 57214fab91258a64a9d336741ed1e7ad, type: 2}
+    - {fileID: 11400000, guid: 57214fab91258a64a9d336741ed1e7ad, type: 2}
+  attack: 7
+  defendAmount: 5
+  buffAmount: 7
+  statusChance: 0.3

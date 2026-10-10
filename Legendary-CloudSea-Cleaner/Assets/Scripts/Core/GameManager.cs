@@ -22,6 +22,9 @@ public class GameManager : MonoBehaviour
     [Header("下一场战斗的敌人（由地图/敌人池在进战斗前设置，Combat 场景读取）")]
     public EnemyData pendingEnemy;
 
+    [Header("下一场战斗的遭遇（多敌人组合；和 pendingEnemy 二选一，遭遇优先）")]
+    public EncounterData pendingEncounter;
+
     [Header("本章 BOSS（章节开始时固定或随机确定，左侧面板提前显示）")]
     public EnemyData chapterBoss;
 
@@ -84,11 +87,33 @@ public class GameManager : MonoBehaviour
         if (card != null) playerDeck.Add(card);
     }
 
-    // 统一进入战斗入口：传入敌人（可为 null，Combat 会回退默认值）和这次战斗是否推进距离
+    // 统一进入战斗入口：传入单个敌人（可为 null，Combat 会回退默认值）和这次战斗是否推进距离
     public void EnterCombat(EnemyData enemy, bool advanceDistance)
     {
         pendingEnemy = enemy;
+        pendingEncounter = null;
         isBossFight = enemy != null && enemy.kind == EnemyData.EnemyKind.Boss;
+        pendingDistanceAdvance = advanceDistance;
+        SceneManager.LoadScene("Combat");
+    }
+
+    // 统一进入战斗入口：传入一整个遭遇（多敌人组合）
+    public void EnterCombat(EncounterData encounter, bool advanceDistance)
+    {
+        pendingEncounter = encounter;
+        pendingEnemy = null;
+        isBossFight = false;
+        if (encounter != null)
+        {
+            foreach (EncounterData.Member m in encounter.members)
+            {
+                if (m != null && m.enemy != null && m.enemy.kind == EnemyData.EnemyKind.Boss)
+                {
+                    isBossFight = true;
+                    break;
+                }
+            }
+        }
         pendingDistanceAdvance = advanceDistance;
         SceneManager.LoadScene("Combat");
     }

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Job_Test2
   m_EditorClassIdentifier: 
   jobName: TestJob2
-  jobColor: {r: 0, g: 0.14121628, b: 1, a: 1}
+  jobColor: {r: 0.9622642, g: 0.8948383, b: 0, a: 1}
   startingPools:
   - {fileID: 11400000, guid: 240ae6b3d83f45f4f8f7bf268e3f6877, type: 2}
   rewardPools:

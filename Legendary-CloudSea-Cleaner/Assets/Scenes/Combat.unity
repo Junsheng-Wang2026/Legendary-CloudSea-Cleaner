@@ -1309,7 +1309,7 @@ MonoBehaviour:
   enemySpriteRenderer: {fileID: 0}
   enemyImage: {fileID: 1843449939}
   enemyNameText: {fileID: 0}
-  enemyData: {fileID: 0}
+  enemyData: {fileID: 11400000, guid: 52834088f33d48540b4cd5e5c7a807ce, type: 2}
   enemyHP: 1
   enemyAttack: 8
   maxAP: 3
