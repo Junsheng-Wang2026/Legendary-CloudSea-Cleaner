@@ -127,7 +127,7 @@ public class DistanceBar : MonoBehaviour
 
         int remain = Mathf.Max(0, Mathf.CeilToInt(checkpointDistance - depth));
         if (distanceText != null)
-            distanceText.text = UIText.DistanceToCheckpoint(remain);
+            distanceText.text = "距离本章检查点 " + remain + "M";
     }
 
     // 新章节重置
@@ -136,7 +136,6 @@ public class DistanceBar : MonoBehaviour
         if (GameManager.Instance == null) return;
         GameManager.Instance.currentDepth = 0;
         GameManager.Instance.currentEventIndex = 0;
-        GameManager.Instance.pendingDistanceAdvance = false;
         _displayedDepth = 0f;
         _targetDepth = 0f;
         UpdateBar(0f);

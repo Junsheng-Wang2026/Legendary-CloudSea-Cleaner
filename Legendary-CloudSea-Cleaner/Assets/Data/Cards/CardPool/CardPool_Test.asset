@@ -14,23 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cards:
   - card: {fileID: 11400000, guid: b78335a8e695c9e45872d1831f4192db, type: 2}
-    startingCount: 100
+    startingCount: 1
     rewardWeight: 0
   - card: {fileID: 11400000, guid: 8ec65ec0c51836a46982c4dbb8984be8, type: 2}
-    startingCount: 100
+    startingCount: 1
     rewardWeight: 0
   - card: {fileID: 11400000, guid: 4c7b6c0ed21aa6144820ebd21112d197, type: 2}
-    startingCount: 100
+    startingCount: 1
     rewardWeight: 0
   - card: {fileID: 11400000, guid: 79bea83286e65ff4291612045f65e685, type: 2}
-    startingCount: 100
+    startingCount: 1
     rewardWeight: 0
   - card: {fileID: 11400000, guid: e31f73b4f21bdb742b52cea2fa090b29, type: 2}
-    startingCount: 100
+    startingCount: 1
     rewardWeight: 0
   - card: {fileID: 11400000, guid: 8d34b8e4a8d8f5042a7bd149e5d3884b, type: 2}
-    startingCount: 100
+    startingCount: 1
     rewardWeight: 0
   - card: {fileID: 11400000, guid: b6e51b82872c4c74c9c40e820029c022, type: 2}
-    startingCount: 100
+    startingCount: 1
     rewardWeight: 0

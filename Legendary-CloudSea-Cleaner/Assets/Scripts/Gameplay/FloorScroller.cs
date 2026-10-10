@@ -26,17 +26,20 @@ public class FloorScroller : MonoBehaviour
     [Header("停止高度（没有 stopMarker 时用）")]
     public float playerY = 0f;
 
+    [Header("事件楼层滚动距离（0=自动取一个楼层循环周期，动画时长固定）")]
+    public float eventRollDistance = 0f;
+
     [Header("到位回调")]
     public UnityEvent onArrived;
 
     readonly List<RectTransform> _segments = new List<RectTransform>();
     readonly List<float> _initSegY = new List<float>();
-    float _initEventY;
 
     float _step;
     float _recycleY;
     float _loopSpan;
     float _targetY;
+    float _eventRollDist;
 
     enum State { Idle, Wait, Moving, Arrived }
     State _state = State.Idle;
@@ -81,12 +84,17 @@ public class FloorScroller : MonoBehaviour
         _loopSpan = n * _step;          // 整个楼层列的循环周期
         _recycleY = maxY + _step;       // 超过这条线就回收到最底部
 
+        _targetY = stopMarker != null ? stopMarker.anchoredPosition.y : playerY;
+        _eventRollDist = eventRollDistance > 0f ? eventRollDistance : _loopSpan;
+        if (_eventRollDist <= 0f) _eventRollDist = fallbackStep;
+
         if (eventFloor != null)
         {
-            _initEventY = eventFloor.anchoredPosition.y;
             DisableRaycast(eventFloor);
+            Vector2 ep = eventFloor.anchoredPosition;
+            ep.y = _targetY - _eventRollDist;  // 自动放到停止标记下方一个滚动距离
+            eventFloor.anchoredPosition = ep;
         }
-        _targetY = stopMarker != null ? stopMarker.anchoredPosition.y : playerY;
     }
 
     // 关闭物体及所有子物体 Image 的射线检测，避免挡住 UI 按钮
@@ -101,18 +109,28 @@ public class FloorScroller : MonoBehaviour
     // 绑“下一事件”按钮
     public void StartDescent()
     {
-        ResetFloors();  // 每次开始前复位到初始铺满状态，避免卡在 Arrived 导致再点无效
+        _targetY = stopMarker != null ? stopMarker.anchoredPosition.y : playerY;
+        _eventRollDist = eventRollDistance > 0f ? eventRollDistance : _loopSpan;
+        if (_eventRollDist <= 0f) _eventRollDist = fallbackStep;
+
+        ResetFloors();  // 复位楼层，并把事件楼层放到停止标记下方一个滚动距离
 
         _state = State.Wait;
         _waitTimer = 0f;
         _arrivedFired = false;
-        _targetY = stopMarker != null ? stopMarker.anchoredPosition.y : playerY;
 
         _traveled = 0f;
-        if (eventFloor != null)
-            _totalDist = Mathf.Max(1f, _targetY - eventFloor.anchoredPosition.y);
-        else
-            _totalDist = 1f;
+        _totalDist = Mathf.Max(1f, _eventRollDist);
+
+        Debug.Log("[FloorScroller] StartDescent：segmentContainer="
+            + (segmentContainer == null ? "空" : segmentContainer.name)
+            + "，普通楼层数=" + _segments.Count
+            + "，eventFloor=" + (eventFloor == null ? "空" : eventFloor.name)
+            + "，stopMarker=" + (stopMarker == null ? "空" : stopMarker.name)
+            + "，targetY=" + _targetY
+            + "，eventFloorY=" + (eventFloor == null ? "空" : eventFloor.anchoredPosition.y.ToString())
+            + "，totalDist=" + _totalDist
+            + "，物体激活=" + gameObject.activeInHierarchy);
     }
 
     void Update()
@@ -120,7 +138,11 @@ public class FloorScroller : MonoBehaviour
         if (_state == State.Wait)
         {
             _waitTimer += Time.deltaTime;
-            if (_waitTimer >= startDelay) _state = State.Moving;
+            if (_waitTimer >= startDelay)
+            {
+                _state = State.Moving;
+                Debug.Log("[FloorScroller] 进入 Moving，开始滚动");
+            }
             return;
         }
 
@@ -162,6 +184,7 @@ public class FloorScroller : MonoBehaviour
                 if (!_arrivedFired)
                 {
                     _arrivedFired = true;
+                    Debug.Log("[FloorScroller] 到位 Arrived，触发 onArrived");
                     onArrived?.Invoke();
                 }
                 return;
@@ -186,7 +209,7 @@ public class FloorScroller : MonoBehaviour
         if (eventFloor != null)
         {
             Vector2 pos = eventFloor.anchoredPosition;
-            pos.y = _initEventY;
+            pos.y = _targetY - _eventRollDist;
             eventFloor.anchoredPosition = pos;
         }
     }

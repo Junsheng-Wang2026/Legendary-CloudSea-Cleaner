@@ -15,4 +15,6 @@ MonoBehaviour:
   members:
   - enemy: {fileID: 11400000, guid: 52834088f33d48540b4cd5e5c7a807ce, type: 2}
     startPhase: 0
-  timeCostOverride: 0
+  - enemy: {fileID: 11400000, guid: 5974688479fa26b41be23d0ef89efb87, type: 2}
+    startPhase: 0
+  timeCostOverride: 30

@@ -10,8 +10,7 @@ public interface IEventContext
     void GrantCards(List<CardData> cards);                  // 一次获得多张牌（固定牌/状态牌）
     void SpendTime(int minutes);                            // 消耗时间（分钟，传正数）
     void RefundTime(int minutes);                           // 返还时间（分钟，传正数）
-    void EnterFight(EnemyData enemy, bool advanceDistance); // 进入单怪战斗（敌人可空，是否推进距离）
-    void EnterEncounter(EncounterData encounter);           // 进入一整场多敌人遭遇战斗
+    void EnterEncounter(EncounterData encounter);           // 进入一整场多敌人遭遇战斗（单怪也包成遭遇）
     void GoToScene(string sceneName);                       // 切到其他场景（如 Shop）
     void SettleChapter();                                   // 触发章节结算
     void FinishEvent();                                     // 本事件处理完，解锁下一次 Next Event

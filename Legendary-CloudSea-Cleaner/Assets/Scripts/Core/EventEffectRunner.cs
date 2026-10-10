@@ -2,8 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
-
+using Random = UnityEngine.Random;  // 同时 using System 和 UnityEngine，固定 Random 指向 Unity 的随机数
 
 // 事件效果执行器：把一个选项挂的一串 EventEffect 按顺序逐个跑掉。
 // 纯逻辑、不挂物体；C5 的选项按钮点击后调 ChapterDirector.RunOptionEffects(...)，内部走这里的协程。

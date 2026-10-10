@@ -64,17 +64,11 @@ public class EnemyData : ScriptableObject
 
     [Header("战斗数值")]
     public int maxHP = 35;
-    public int timeCost = 30;           // 被击杀消耗的时间（分钟，精英可填 45）
+    public int timeCost = 30;           // 被击杀消耗的时间（分钟，精英可填 45，BOSS 可填 45）
 
-    [Header("出招表（按顺序循环；配了就严格按它出招）")]
+    [Header("出招表（按顺序循环；必须配置，留空的怪在战斗里不会行动）")]
     [Tooltip("从第几招开始，0 = 第一招。多只怪的不同起手在“遭遇”里单独覆盖")]
     public int startPhase = 0;
     [Tooltip("例如雨渍：浸湿→飞溅→凝固，配 3 个元素即可循环")]
     public List<EnemyAction> actionCycle = new List<EnemyAction>();
-
-    [Header("旧随机兜底（只有上面出招表留空时才用）")]
-    public int attack = 7;              // 攻击意图伤害
-    public int defendAmount = 5;        // 防御意图加的护甲
-    public int buffAmount = 7;          // 蓄力意图：下次攻击 +多少
-    [Range(0f, 1f)] public float statusChance = 0.3f;  // 攻击时塞状态牌概率
 }

@@ -13,11 +13,9 @@ MonoBehaviour:
   m_Name: Scorch Sun
   m_EditorClassIdentifier: 
   enemyName: "\u70C8\u65E5"
-  icon: {fileID: 0}
+  icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   kind: 2
   maxHP: 300
-  attack: 15
-  defendAmount: 5
-  buffAmount: 7
-  statusChance: 0.3
   timeCost: 45
+  startPhase: 0
+  actionCycle: []

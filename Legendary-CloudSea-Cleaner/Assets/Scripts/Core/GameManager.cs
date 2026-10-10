@@ -16,16 +16,10 @@ public class GameManager : MonoBehaviour
     public int lotteryPoints = 0;  // 彩票点数（攒够可刮彩票，刮奖界面暂不做）
     public int removePoints = 0;   // 删牌点数（攒够可删一张牌，删牌界面暂不做）
 
-    [Header("战斗标记")]
-    public bool isBossFight = false;
-
-    [Header("下一场战斗的敌人（由地图/敌人池在进战斗前设置，Combat 场景读取）")]
-    public EnemyData pendingEnemy;
-
-    [Header("下一场战斗的遭遇（多敌人组合；和 pendingEnemy 二选一，遭遇优先）")]
+    [Header("下一场战斗的遭遇（多敌人组合；进战斗前由事件/超时BOSS设置，Combat 场景读取后清空）")]
     public EncounterData pendingEncounter;
 
-    [Header("本章 BOSS（章节开始时固定或随机确定，左侧面板提前显示）")]
+    [Header("本章 BOSS（章节开始时固定或随机确定，左侧面板提前显示；超时直接打它）")]
     public EnemyData chapterBoss;
 
     [Header("全局牌组")]
@@ -40,9 +34,8 @@ public class GameManager : MonoBehaviour
 
     [Header("高度进度")]
     public int currentDepth = 0;
-    public int checkpointDepth = 100;  // 到检查点需要的高度
+    public int checkpointDepth = 100;  // 章节总距离（由章节数据驱动，仅作运行时记录）
     public int currentEventIndex = 0;  // 当前是本章第几起事件（用于取每段距离）
-    public bool pendingDistanceAdvance = false;  // 战斗胜利返回后是否推进一次距离（旧流程保留）
     public int activeChapterNumber = 0;  // 已初始化、正在进行的章节号（切场景返回后用于恢复而非重开）
     public WeatherData currentWeather;   // 本章已抽定的天气（切场景返回后恢复左侧栏，避免重抽）
 
@@ -74,7 +67,7 @@ public class GameManager : MonoBehaviour
 
     /// <summary>战斗胜利三选一：从 主职+副职 的奖励牌池按权重抽 count 张互不相同的牌；
     /// 同一张牌在多个池出现时权重累加，凑不够用 fallbackRewardCards 补。
-    /// 没配主职时返回 null，调用方回退到自己的测试奖励牌。</summary>
+    /// 没配主职时返回 null。</summary>
     public List<CardData> DrawRewardCards(int count = 3)
     {
         if (mainJob == null) return null;
@@ -87,34 +80,32 @@ public class GameManager : MonoBehaviour
         if (card != null) playerDeck.Add(card);
     }
 
-    // 统一进入战斗入口：传入单个敌人（可为 null，Combat 会回退默认值）和这次战斗是否推进距离
-    public void EnterCombat(EnemyData enemy, bool advanceDistance)
+    // 进入战斗：单个敌人（章节超时 BOSS 用）。内部包成单成员遭遇，统一走遭遇流程。
+    public void EnterCombat(EnemyData enemy)
     {
-        pendingEnemy = enemy;
-        pendingEncounter = null;
-        isBossFight = enemy != null && enemy.kind == EnemyData.EnemyKind.Boss;
-        pendingDistanceAdvance = advanceDistance;
-        SceneManager.LoadScene("Combat");
+        if (enemy == null)
+        {
+            Debug.LogError("[GameManager] EnterCombat 传入空敌人，未进入战斗");
+            return;
+        }
+
+        EncounterData enc = ScriptableObject.CreateInstance<EncounterData>();
+        enc.members = new List<EncounterData.Member>
+        {
+            new EncounterData.Member { enemy = enemy, startPhase = Mathf.Max(0, enemy.startPhase) }
+        };
+        EnterCombat(enc);
     }
 
-    // 统一进入战斗入口：传入一整个遭遇（多敌人组合）
-    public void EnterCombat(EncounterData encounter, bool advanceDistance)
+    // 进入战斗：一整个遭遇（多敌人组合）。距离统一在章节下降段推进，这里不再处理距离。
+    public void EnterCombat(EncounterData encounter)
     {
-        pendingEncounter = encounter;
-        pendingEnemy = null;
-        isBossFight = false;
-        if (encounter != null)
+        if (encounter == null)
         {
-            foreach (EncounterData.Member m in encounter.members)
-            {
-                if (m != null && m.enemy != null && m.enemy.kind == EnemyData.EnemyKind.Boss)
-                {
-                    isBossFight = true;
-                    break;
-                }
-            }
+            Debug.LogError("[GameManager] EnterCombat 传入空遭遇，未进入战斗");
+            return;
         }
-        pendingDistanceAdvance = advanceDistance;
+        pendingEncounter = encounter;
         SceneManager.LoadScene("Combat");
     }
 

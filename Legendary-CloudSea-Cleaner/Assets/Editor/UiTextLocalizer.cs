@@ -115,8 +115,8 @@ public static class UiTextLocalizer
         foreach (EventData a in LoadAll<EventData>())
         {
             bool c = Translate(ref a.description);
-            c |= Translate(ref a.option1Text);
-            c |= Translate(ref a.option2Text);
+          //  c |= Translate(ref a.option1Text);
+          //  c |= Translate(ref a.option2Text);
             if (c) { Mark(a, log); dataCount++; }
         }
         foreach (RelicData a in LoadAll<RelicData>())

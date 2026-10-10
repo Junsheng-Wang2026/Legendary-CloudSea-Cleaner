@@ -79,7 +79,6 @@ public class ChapterDirector : MonoBehaviour, IEventContext
                 GameManager.Instance.chapterBoss = boss;
                 GameManager.Instance.currentDepth = 0;
                 GameManager.Instance.currentEventIndex = 0;
-                GameManager.Instance.pendingDistanceAdvance = false;
                 GameManager.Instance.activeChapterNumber = ch;
             }
 
@@ -133,7 +132,28 @@ public class ChapterDirector : MonoBehaviour, IEventContext
     // 绑 Next Event 按钮：开始下降 + 距离条推进当前段
     public void OnNextEvent()
     {
-        if (_chapter == null || _moving || _eventActive) return;
+        // 诊断日志：点了没反应时，看 Console 是下面哪一条挡住
+        if (_chapter == null)
+        {
+            Debug.LogWarning("[NextEvent] 被挡住：章节为空。检查 ChapterDirector 的 Chapters 列表或 Override Chapter");
+            return;
+        }
+        if (_moving)
+        {
+            Debug.LogWarning("[NextEvent] 被挡住：_moving=true，楼层下降动画还在播放或没复位（到位回调 OnArrivedAtNode 没触发？）");
+            return;
+        }
+        if (_eventActive)
+        {
+            Debug.LogWarning("[NextEvent] 被挡住：_eventActive=true，上一个事件没结束（选项效果没走到 FinishEvent）");
+            return;
+        }
+
+        Debug.Log("[NextEvent] 开始下降，前往节点 " + _currentNodeIndex);
+        Debug.Log("[NextEvent] 引用检查：distanceBar=" + (distanceBar == null ? "【空】" : distanceBar.name)
+            + "，floorScroller=" + (floorScroller == null ? "【空】" : floorScroller.name)
+            + "，topStatusBar=" + (topStatusBar == null ? "【空】" : topStatusBar.name)
+            + "，eventPanelHost=" + (eventPanelHost == null ? "【空】" : eventPanelHost.name));
         if (GameManager.Instance == null) return;
 
         int nodeIdx = GameManager.Instance.currentEventIndex;
@@ -271,15 +291,6 @@ public class ChapterDirector : MonoBehaviour, IEventContext
             TimeManager.Instance.AddTime(minutes);
     }
 
-    public void EnterFight(EnemyData enemy, bool advanceDistance)
-    {
-        // 章节导演流程距离已在下降段推进，统一不再补推
-        if (GameManager.Instance != null)
-            GameManager.Instance.EnterCombat(enemy, false);
-        else
-            SceneManager.LoadScene("Combat");
-    }
-
     public void EnterEncounter(EncounterData encounter)
     {
         if (encounter == null)
@@ -288,9 +299,9 @@ public class ChapterDirector : MonoBehaviour, IEventContext
             return;
         }
         if (GameManager.Instance != null)
-            GameManager.Instance.EnterCombat(encounter, false); // 距离已在下降段推进，统一不补推
+            GameManager.Instance.EnterCombat(encounter); // 距离已在下降段推进，统一不补推
         else
-            SceneManager.LoadScene("Combat");
+            Debug.LogError("[ChapterDirector] 没有 GameManager，无法进入战斗");
     }
 
     public void SetFlag(string flag)

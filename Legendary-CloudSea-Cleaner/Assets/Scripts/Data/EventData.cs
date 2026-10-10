@@ -1,45 +1,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// 事件基类（可继承）。
-// 普通战斗/二选一事件：直接建这个基类资产，用下面的敌人字段和选项字段配置，由导演处理。
-// 有特殊行为的事件（商店/休息/结算等）：继承本类并 override Execute，见 ShopEventData 等。
-[CreateAssetMenu(fileName = "NewEvent", menuName = "Cleaner/Event Data")]
+// 事件资产：节点到位后执行。
+// 两种用法：
+//   1) 纯战斗事件：Options 留空，在下面拖一个遭遇（Encounter）或遭遇池，到点直接开打；
+//   2) 选项事件：在 Options 里配若干选项（每选项一串效果），到点弹选项面板。
+// 商店/休息/结算等特殊事件用对应子类（Shop/Rest/Settlement Event Data）。
+// Project 里右键 Create -> Cleaner -> Event Data 创建。
+[CreateAssetMenu(fileName = "EventData", menuName = "Cleaner/Event Data")]
 public class EventData : ScriptableObject
 {
-    public string eventName;        // 事件名
-    [TextArea] public string description;  // 事件描述
     public enum EventType { Fight, Choice, Interaction }
-    public EventType eventType;     // 战斗/选择/交互
 
-    [Header("战斗敌人（旧单怪，非战斗事件留空）")]
-    public EnemyData enemy;         // 固定敌人：拖了就打它
-    public EnemyPool enemyPool;     // 随机敌人：enemy 留空时从这个池子抽
-    public bool forceFight = false; // true=无选项、到点强制直接开打（超时BOSS事件）
-    public bool advanceDistance = true; // 打完是否推进下降距离（超时BOSS设 false）
+    [Header("描述")]
+    public string eventName;
+    [TextArea(3, 8)] public string description;
+    public EventType eventType = EventType.Choice;
 
-    [Header("战斗遭遇（新·多敌人，和上面 enemy/enemyPool 二选一；遭遇优先）")]
-    public EncounterData encounter;     // 固定遭遇：拖了就打这一整场
-    public EncounterPool encounterPool; // 随机遭遇：encounter 留空时从池子抽一整场
+    [Header("纯战斗事件（Options 留空时用）：二选一，拖固定遭遇或留空用遭遇池随机")]
+    public EncounterData encounter;
+    public EncounterPool encounterPool;
 
-    // ===== 旧 2 选项（向后兼容，新事件可不填，改用下面 Options）=====
-    public string option1Text;      // 选项1文字
-    public bool option1IsFight;     // 选项1是否进战斗
-    public int option1TimeCost;     // 选项1时间消耗
-    public int option1HPChange;     // 选项1血量变化
-    public CardData option1Reward;  // 选项1奖励牌（可选）
-
-    public string option2Text;      // 选项2文字
-    public bool option2IsFight;     // 选项2是否进战斗
-    public int option2TimeCost;     // 选项2时间消耗
-    public int option2HPChange;     // 选项2血量变化
-    public CardData option2Reward;  // 选项2奖励牌（可选）
-
-    [Header("多选项（新；配了任意一项就用这套，数量不限）")]
-    [Tooltip("每个选项挂一串效果，按顺序执行")]
+    [Header("多选项（配了就弹选项面板；纯战斗事件留空，到点直接打上面的遭遇）")]
     public List<EventOption> options = new List<EventOption>();
 
-    // 解析本事件要打的遭遇：固定优先，其次遭遇池；都没有返回 null（调用方再回退旧 enemy/enemyPool）
+    // 解析这场战斗的遭遇：固定优先，否则从遭遇池随机，都没有返回 null
     public EncounterData ResolveEncounter()
     {
         if (encounter != null) return encounter;
@@ -47,12 +32,12 @@ public class EventData : ScriptableObject
         return null;
     }
 
-    // 是否使用新的多选项系统
+    // 是否配了新的多选项
     public bool HasNewOptions()
     {
         return options != null && options.Count > 0;
     }
 
-    // 事件执行入口：特殊事件子类 override 它；普通战斗/选择事件默认空，由导演按上面字段处理
+    // 子类事件（商店/休息/结算）重写它，由章节导演直接调用
     public virtual void Execute(IEventContext ctx) { }
 }
