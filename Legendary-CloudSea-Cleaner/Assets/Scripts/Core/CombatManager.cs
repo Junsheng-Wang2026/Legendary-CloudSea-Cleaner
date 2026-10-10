@@ -376,7 +376,7 @@ public class CombatManager : MonoBehaviour
             }
             else
             {
-                victoryPanel.SetActive(true);
+                ShowOnTop(victoryPanel);
             }
         }
     }
@@ -384,14 +384,21 @@ public class CombatManager : MonoBehaviour
     // 奖励选完/跳过后显示胜利面板
     public void ShowVictoryAfterReward()
     {
-        victoryPanel.SetActive(true);
+        ShowOnTop(victoryPanel);
+    }
+
+    // 结算按钮/面板放到最上层显示，避免被手牌挡住点不到
+    void ShowOnTop(GameObject panel)
+    {
+        panel.SetActive(true);
+        panel.transform.SetAsLastSibling();
     }
 
     void CheckPlayerDead()
     {
         if (playerHP <= 0)
         {
-            defeatPanel.SetActive(true);
+            ShowOnTop(defeatPanel);
         }
     }
 
