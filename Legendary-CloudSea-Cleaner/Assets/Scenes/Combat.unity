@@ -1327,6 +1327,17 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b78335a8e695c9e45872d1831f4192db, type: 2}
   - {fileID: 11400000, guid: 68cde0306d0efca4f8c6052ed33520d1, type: 2}
   - {fileID: 11400000, guid: 9186dadcce8dbaf489204332a7da0250, type: 2}
+  - {fileID: 11400000, guid: d7c80acbafe4f414b904a97cb6400227, type: 2}
+  - {fileID: 11400000, guid: 63e72f1ff89113d438c8e397ab6a6664, type: 2}
+  - {fileID: 11400000, guid: b99a981433efaba438e174932d092ff3, type: 2}
+  - {fileID: 11400000, guid: 172794dcf35866d4a9ed64018e34125a, type: 2}
+  - {fileID: 11400000, guid: 063bd32eb4159724f9b97020eda634db, type: 2}
+  - {fileID: 11400000, guid: b84a6eab2805c7a4a9f61c4a47c63312, type: 2}
+  - {fileID: 11400000, guid: bacb2644692eaf741ba3a15033a4a597, type: 2}
+  - {fileID: 11400000, guid: 8ec65ec0c51836a46982c4dbb8984be8, type: 2}
+  - {fileID: 11400000, guid: 79bea83286e65ff4291612045f65e685, type: 2}
+  - {fileID: 11400000, guid: a23e2815809db5748bc98b2e7bc70441, type: 2}
+  - {fileID: 11400000, guid: eed51bd38d6e823459ed47705e434744, type: 2}
   handLayout: {fileID: 1512795945}
   equippedRelic: {fileID: 0}
   statusCard: {fileID: 11400000, guid: 57214fab91258a64a9d336741ed1e7ad, type: 2}
