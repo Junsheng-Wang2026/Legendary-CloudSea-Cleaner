@@ -28,6 +28,13 @@ public class GameManager : MonoBehaviour
     [Header("全局牌组")]
     public List<CardData> playerDeck = new List<CardData>();
 
+    [Header("职业（主职必填、副职可空；配了主职就会在开局按职业牌池自动组牌）")]
+    public JobData mainJob;
+    public JobData subJob;
+
+    [Header("中立奖励兜底牌（职业奖励牌池凑不满 3 张时补，可空）")]
+    public List<CardData> fallbackRewardCards = new List<CardData>();
+
     [Header("高度进度")]
     public int currentDepth = 0;
     public int checkpointDepth = 100;  // 到检查点需要的高度
@@ -45,6 +52,36 @@ public class GameManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+
+    void Start()
+    {
+        // 配了主职、且牌组还是空的：开局按 主职+副职 的初始牌池自动组一次牌
+        if (mainJob != null && (playerDeck == null || playerDeck.Count == 0))
+        {
+            BuildStartingDeckFromJobs();
+        }
+    }
+
+    /// <summary>按 主职+副职 的初始牌池重新展开生成开局牌组（会清空并替换当前 playerDeck）。</summary>
+    public void BuildStartingDeckFromJobs()
+    {
+        playerDeck = CardPool.BuildStartingCards(JobData.CollectStartingPools(mainJob, subJob));
+    }
+
+    /// <summary>战斗胜利三选一：从 主职+副职 的奖励牌池按权重抽 count 张互不相同的牌；
+    /// 同一张牌在多个池出现时权重累加，凑不够用 fallbackRewardCards 补。
+    /// 没配主职时返回 null，调用方回退到自己的测试奖励牌。</summary>
+    public List<CardData> DrawRewardCards(int count = 3)
+    {
+        if (mainJob == null) return null;
+        return CardPool.DrawRewards(JobData.CollectRewardPools(mainJob, subJob), count, fallbackRewardCards);
+    }
+
+    /// <summary>三选一选中后把牌加入玩家牌组。</summary>
+    public void AddCardToDeck(CardData card)
+    {
+        if (card != null) playerDeck.Add(card);
     }
 
     // 统一进入战斗入口：传入敌人（可为 null，Combat 会回退默认值）和这次战斗是否推进距离

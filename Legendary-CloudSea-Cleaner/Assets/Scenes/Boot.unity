@@ -5379,6 +5379,9 @@ MonoBehaviour:
   pendingEnemy: {fileID: 0}
   chapterBoss: {fileID: 0}
   playerDeck: []
+  mainJob: {fileID: 11400000, guid: 7700d14ed052f3943855b3085c661ee2, type: 2}
+  subJob: {fileID: 0}
+  fallbackRewardCards: []
   currentDepth: 0
   checkpointDepth: 100
   currentEventIndex: 0

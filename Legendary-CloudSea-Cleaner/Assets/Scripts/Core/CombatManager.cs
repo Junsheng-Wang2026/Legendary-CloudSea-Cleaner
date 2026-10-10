@@ -369,10 +369,21 @@ public class CombatManager : MonoBehaviour
                 TimeManager.Instance.SpendTime(_timeCost);
             }
 
-            // 三选一奖励面板
-            if (rewardPanel != null && rewardCards.Count > 0)
+            // 三选一奖励：优先从 主职+副职 奖励牌池按权重抽 3 张互不相同；
+            // 没配职业、或职业池抽不到时，回退到 Inspector 上固定的 rewardCards 测试牌
+            List<CardData> rewardOptions = null;
+            if (GameManager.Instance != null)
             {
-                rewardPanel.ShowRewards(rewardCards);
+                rewardOptions = GameManager.Instance.DrawRewardCards(3);
+            }
+            if ((rewardOptions == null || rewardOptions.Count == 0) && rewardCards != null && rewardCards.Count > 0)
+            {
+                rewardOptions = rewardCards;
+            }
+
+            if (rewardPanel != null && rewardOptions != null && rewardOptions.Count > 0)
+            {
+                rewardPanel.ShowRewards(rewardOptions);
             }
             else
             {

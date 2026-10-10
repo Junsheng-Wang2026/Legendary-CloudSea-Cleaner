@@ -23,14 +23,11 @@ public class CardRewardPanel : MonoBehaviour
         ClearSpawned();
         _options.Clear();
 
-        // 从奖池随机抽3张不重复
-        List<CardData> temp = new List<CardData>(pool);
-        int count = Mathf.Min(3, temp.Count);
+        // 调用方（CombatManager）已经按职业奖励池加权抽好，这里直接显示，最多 3 张、不再二次随机
+        int count = Mathf.Min(3, pool != null ? pool.Count : 0);
         for (int i = 0; i < count; i++)
         {
-            int idx = Random.Range(0, temp.Count);
-            _options.Add(temp[idx]);
-            temp.RemoveAt(idx);
+            if (pool[i] != null) _options.Add(pool[i]);
         }
 
         // 用手牌预制体生成选项
@@ -62,7 +59,7 @@ public class CardRewardPanel : MonoBehaviour
     {
         if (index < _options.Count && GameManager.Instance != null)
         {
-            GameManager.Instance.playerDeck.Add(_options[index]);
+            GameManager.Instance.AddCardToDeck(_options[index]);
             Debug.Log("选择奖励牌: " + _options[index].cardName);
         }
         OnFinished();
