@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -21,6 +22,8 @@ public class ChapterDirector : MonoBehaviour, IEventContext
     public TopStatusBar topStatusBar;      // 顶部状态栏（章-节 / Descending）
     [Tooltip("挂 MapNode、且接好 EventPanel 与两个选项按钮的物体，用来弹战斗/选择事件面板")]
     public MapNode eventPanelHost;
+    [Tooltip("事件三选一奖励面板（挂 EventCardRewardPanel 的物体），事件效果 DrawCardChoice 用；可空")]
+    public EventCardRewardPanel eventRewardPanel;
 
     ChapterData _chapter;
     int _currentNodeIndex;
@@ -174,7 +177,7 @@ public class ChapterDirector : MonoBehaviour, IEventContext
 
         if (ev.GetType() == typeof(EventData))
         {
-            // 基类事件：战斗 / 二选一，走事件面板
+            // 基类事件：战斗 / 选项，走事件面板
             _eventActive = true;
             if (eventPanelHost != null)
                 eventPanelHost.ShowEvent(ev);
@@ -190,6 +193,26 @@ public class ChapterDirector : MonoBehaviour, IEventContext
             _eventActive = true;
             ev.Execute(this);
         }
+    }
+
+    // ===== 新多选项入口（C5 的动态选项按钮点击后调这里）=====
+    // 顺序执行该选项挂的一串效果；若中途没切场景/战斗/结算，跑完自动关面板并解锁下一节点。
+    public void RunOptionEffects(EventOption option)
+    {
+        if (option == null)
+        {
+            FinishEvent();
+            return;
+        }
+
+        StartCoroutine(EventEffectRunner.RunRoutine(eventRewardPanel, option.effects, this, takenOver =>
+        {
+            if (!takenOver)
+            {
+                if (eventPanelHost != null) eventPanelHost.HideEventPanel();
+                FinishEvent();
+            }
+        }));
     }
 
     // ===== IEventContext 实现 =====
@@ -217,14 +240,35 @@ public class ChapterDirector : MonoBehaviour, IEventContext
         if (GameManager.Instance == null) return;
         if (card != null)
         {
-            GameManager.Instance.playerDeck.Add(card);
+            GameManager.Instance.AddCardToDeck(card);
             Debug.Log("[ChapterDirector] 获得卡牌：" + card.name);
         }
         else
         {
-            // Boot 场景暂无随机牌池；需要随机奖励时在事件资产上直接指定奖励牌
+            // Boot 场景暂无随机牌池；需要随机奖励时用 DrawCardChoice 效果或直接指定奖励牌
             Debug.Log("[ChapterDirector] 请求随机奖励牌，但 Boot 未配置牌池，暂不发牌");
         }
+    }
+
+    public void GrantCards(List<CardData> cards)
+    {
+        if (cards == null || GameManager.Instance == null) return;
+        foreach (CardData c in cards)
+        {
+            if (c != null) GameManager.Instance.AddCardToDeck(c);
+        }
+    }
+
+    public void SpendTime(int minutes)
+    {
+        if (TimeManager.Instance != null && minutes > 0)
+            TimeManager.Instance.SpendTime(minutes);
+    }
+
+    public void RefundTime(int minutes)
+    {
+        if (TimeManager.Instance != null && minutes > 0)
+            TimeManager.Instance.AddTime(minutes);
     }
 
     public void EnterFight(EnemyData enemy, bool advanceDistance)
@@ -234,6 +278,38 @@ public class ChapterDirector : MonoBehaviour, IEventContext
             GameManager.Instance.EnterCombat(enemy, false);
         else
             SceneManager.LoadScene("Combat");
+    }
+
+    public void EnterEncounter(EncounterData encounter)
+    {
+        if (encounter == null)
+        {
+            Debug.LogWarning("[ChapterDirector] EnterEncounter 传入空遭遇，未进入战斗");
+            return;
+        }
+        if (GameManager.Instance != null)
+            GameManager.Instance.EnterCombat(encounter, false); // 距离已在下降段推进，统一不补推
+        else
+            SceneManager.LoadScene("Combat");
+    }
+
+    public void SetFlag(string flag)
+    {
+        if (GameManager.Instance != null) GameManager.Instance.SetFlag(flag);
+    }
+
+    public bool HasFlag(string flag)
+    {
+        return GameManager.Instance != null && GameManager.Instance.HasFlag(flag);
+    }
+
+    public void ChangeWeather(WeatherData weather)
+    {
+        if (weather == null || GameManager.Instance == null) return;
+        GameManager.Instance.currentWeather = weather;
+        if (statusBar != null)
+            statusBar.SetChapter(weather, GameManager.Instance.chapterBoss);
+        Debug.Log("[ChapterDirector] 天气变为：" + weather.name);
     }
 
     public void GoToScene(string sceneName)

@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: CardReward_Test
   m_EditorClassIdentifier: 
   cards:
-  - card: {fileID: 11400000, guid: 68cde0306d0efca4f8c6052ed33520d1, type: 2}
+  - card: {fileID: 11400000, guid: 52158cb7a571ddf4cbe8a0d40d0b9b19, type: 2}
     startingCount: 0
     rewardWeight: 1
-  - card: {fileID: 11400000, guid: 68cde0306d0efca4f8c6052ed33520d1, type: 2}
+  - card: {fileID: 11400000, guid: 14aeec570902c0d47b7985c20307f7e9, type: 2}
     startingCount: 0
     rewardWeight: 1
-  - card: {fileID: 11400000, guid: 68cde0306d0efca4f8c6052ed33520d1, type: 2}
+  - card: {fileID: 11400000, guid: 3fd80ad44697c0b419f63403f891b638, type: 2}
     startingCount: 0
     rewardWeight: 1

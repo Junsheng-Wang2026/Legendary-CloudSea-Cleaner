@@ -9,7 +9,7 @@ public class TimeManager : MonoBehaviour
 {
     public static TimeManager Instance { get; private set; }
 
- [Header("初始时间（分钟）")]
+    [Header("初始时间（分钟）")]
     public float startMinutes = 720f;   // 12 小时
 
     [Header("当前剩余时间（只读，运行时看）")]
@@ -58,6 +58,16 @@ public class TimeManager : MonoBehaviour
             _isTimeUp = true;
             OnTimeUp?.Invoke();
         }
+    }
+
+    /// <summary>
+    /// 返还时间（事件里“离开反而 +30min”这类用）。minutes 传正数，只加回、不撤销已触发的超时 BOSS。
+    /// </summary>
+    public void AddTime(float minutes)
+    {
+        if (minutes <= 0f) return;
+        currentMinutes = Mathf.Max(0f, currentMinutes + minutes);
+        OnTimeChanged?.Invoke(currentMinutes);
     }
 
     /// <summary>

@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3eb5da06fb17dd044a71ed1f380cebad, type: 3}
+  m_Name: "Event_Test_\u795E\u79D8\u6C61\u6E0D"
+  m_EditorClassIdentifier: 
+  eventName: "\u795E\u79D8\u6C61\u6E0D"
+  description: "\u4F60\u770B\u5230\u4E86\u4E00\u56E2\u5E38\u89C1\u7684\u96E8\u540E\u6C34\u6E0D\u3002\u5B83\u662F\u5F88\u5E38\u89C1\uFF0C\u800C\u8DDD\u79BB\u4E0A\u6B21\u4E0B\u96E8\u5DF2\u7ECF\u8FC7\u53BB\u4E00\u5468\uFF0C\u5E76\u4E14\u5230\u73B0\u5728\u4F60\u5DF2\u7ECF\u5B8C\u6210\u4E86\u4E09\u4E2A\u73ED\u6B21\u4E86\u3002\u8FD9\u4E0D\u5E94\u8BE5\uFF0C\u8FD9\u662F\u4F60\u7684\u7B2C\u4E00\u53CD\u5E94\u3002\r\n\u4F60\u60F3\u8D77\u524D\u5929\u665A\u4E0A\u53E6\u4E00\u4F4D\u540C\u4E8B\u7ED9\u4F60\u8BB2\u8D77\u8FC7\u7684\u540C\u6837\u906D\u9047\uFF0C\u4F60\u5FC3\u4E2D\u4E0D\u7981\u5347\u8D77\u4E00\u4E1D\u6050\u60E7\u7684\u60C5\u7EEA\u3002"
+  eventType: 1
+  enemy: {fileID: 11400000, guid: 52834088f33d48540b4cd5e5c7a807ce, type: 2}
+  enemyPool: {fileID: 0}
+  forceFight: 0
+  advanceDistance: 1
+  encounter: {fileID: 0}
+  encounterPool: {fileID: 0}
+  option1Text: 
+  option1IsFight: 0
+  option1TimeCost: 0
+  option1HPChange: 0
+  option1Reward: {fileID: 0}
+  option2Text: 
+  option2IsFight: 0
+  option2TimeCost: 0
+  option2HPChange: 0
+  option2Reward: {fileID: 0}
+  options: []

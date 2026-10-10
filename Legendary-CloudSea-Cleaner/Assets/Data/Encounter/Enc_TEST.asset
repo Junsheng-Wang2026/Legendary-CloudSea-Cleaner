@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5447d288eb83ab64bb5b2df402235308, type: 3}
+  m_Name: Enc_TEST
+  m_EditorClassIdentifier: 
+  members:
+  - enemy: {fileID: 11400000, guid: 52834088f33d48540b4cd5e5c7a807ce, type: 2}
+    startPhase: 0
+  timeCostOverride: 0

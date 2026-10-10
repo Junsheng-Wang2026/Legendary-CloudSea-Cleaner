@@ -117,4 +117,28 @@ public class GameManager : MonoBehaviour
         pendingDistanceAdvance = advanceDistance;
         SceneManager.LoadScene("Combat");
     }
+
+    [Header("事件标记 flag（DontDestroyOnLoad，存活整个 run；用于事件互斥/选项显隐）")]
+    public HashSet<string> flags = new HashSet<string>();
+
+    public void SetFlag(string f)
+    {
+        if (!string.IsNullOrEmpty(f)) flags.Add(f);
+    }
+
+    public bool HasFlag(string f)
+    {
+        return !string.IsNullOrEmpty(f) && flags.Contains(f);
+    }
+
+    public void RemoveFlag(string f)
+    {
+        if (!string.IsNullOrEmpty(f)) flags.Remove(f);
+    }
+
+    // 开始新的一局时清空（回主菜单/重开可调用）
+    public void ResetFlags()
+    {
+        flags.Clear();
+    }
 }
