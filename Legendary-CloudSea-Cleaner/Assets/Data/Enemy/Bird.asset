@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6fbb3460b55b814f903bbf2003087e5, type: 3}
   m_Name: Bird
   m_EditorClassIdentifier: 
-  enemyName: Bird
+  enemyName: "\u9EBB\u96C0"
   icon: {fileID: 21300000, guid: aa45e06a17825904bb15dc9ec304b096, type: 3}
   kind: 0
   maxHP: 35

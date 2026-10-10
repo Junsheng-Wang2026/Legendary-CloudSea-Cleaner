@@ -7,7 +7,9 @@ public class CardButton : MonoBehaviour, IPointerEnterHandler
 {
     public CardData card;
     public CombatManager combatManager;
-    public TMP_Text buttonText;
+    public TMP_Text buttonText;   // 描述文字
+    public TMP_Text nameText;     // 卡名（可选，没拖就不显示）
+    public TMP_Text costText;     // 费用（可选，没拖就不显示）
     public Image cardImage;  // 卡牌图片
     public bool enableHoverRaise = true;  // 是否允许悬停置顶（奖励面板里关掉）
 
@@ -18,6 +20,15 @@ public class CardButton : MonoBehaviour, IPointerEnterHandler
         if (buttonText != null && card != null)
         {
             buttonText.text = card.description;
+        }
+        if (nameText != null && card != null)
+        {
+            nameText.text = card.cardName;
+        }
+        if (costText != null && card != null)
+        {
+            // 状态牌（呆滞等）不显示费用
+            costText.text = card.cardType == CardType.Status ? "" : card.cost.ToString();
         }
         if (cardImage != null && card != null)
         {

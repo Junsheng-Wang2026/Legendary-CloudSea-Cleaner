@@ -127,7 +127,7 @@ public class DistanceBar : MonoBehaviour
 
         int remain = Mathf.Max(0, Mathf.CeilToInt(checkpointDistance - depth));
         if (distanceText != null)
-            distanceText.text = "距离本章检查点 " + remain + "M";
+            distanceText.text = UIText.DistanceToCheckpoint(remain);
     }
 
     // 新章节重置

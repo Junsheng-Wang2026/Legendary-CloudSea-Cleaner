@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 799d3bc573b11e5419f1dd63cec73a22, type: 3}
+  m_Name: "INT_L04B_\u7EC6\u5BDF"
+  m_EditorClassIdentifier: 
+  cardName: "\u7EC6\u5BDF"
+  cardType: 2
+  rarity: 1
+  cost: 1
+  cardImage: {fileID: 21300000, guid: 13b0ed6ca1ba2cc4e8923b40a87e8ecc, type: 3}
+  description: "\u62BD\u4E24\u5F20\u724C\u3002\u82E5\u672C\u56DE\u5408\u5185\u6B64\u524D\u4ECE\u672A\u6253\u51FA\u653B\u51FB\u724C\uFF0C\u5219\u5BF9\u6240\u6709\u654C\u4EBA\u65BD\u52A0\u865A\u5F31\uFF0C\u6301\u7EED\u4E00\u56DE\u5408"
+  damage: 0
+  attackTimes: 1
+  block: 0
+  drawCards: 2
+  gainEnergy: 0
+  selfDamage: 0
+  exhaust: 0
+  isTemp: 0
+  ignoreBlock: 0
+  applyWeak: 0
+  applyVulnerable: 0
+  conditionalDamage: 0
+  conditionalBlock: 0
+  conditionalDraw: 0
+  statusEffect: 0

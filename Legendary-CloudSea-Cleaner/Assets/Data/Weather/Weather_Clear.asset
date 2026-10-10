@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6391f1b272a7c4a4c93e5687f3cb1a52, type: 3}
   m_Name: Weather_Clear
   m_EditorClassIdentifier: 
-  weatherName: Clear
+  weatherName: "\u6674"
   icon: {fileID: 0}
   weatherEffect: 

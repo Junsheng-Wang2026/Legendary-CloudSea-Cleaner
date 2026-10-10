@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 799d3bc573b11e5419f1dd63cec73a22, type: 3}
+  m_Name: "AGI_L18D_\u52A0\u901F\u52A0\u901F\u52A0\u901F\uFF01"
+  m_EditorClassIdentifier: 
+  cardName: "\u52A0\u901F\u52A0\u901F\u52A0\u901F\uFF01"
+  cardType: 1
+  rarity: 3
+  cost: 2
+  cardImage: {fileID: 21300000, guid: cc6b3157f38e6f340aba5ba514fcd521, type: 3}
+  description: "\u672C\u56DE\u5408\u4E0B\u4E00\u5F20\u653B\u51FB\u6BCF\u6BB5\u4F24\u5BB3+2\u3002\u672C\u573A\u6218\u6597\uFF0C\u6BCF\u56DE\u5408\u5F00\u59CB\u65F6\u7B2C\u4E00\u5F20\u653B\u51FB\u724C\u83B7\u5F97\u7B49\u540C\u4F60\u5F53\u524D\u56DE\u5408\u6570\u7684\u6BCF\u6BB5\u4F24\u5BB3\u52A0\u503C+1\uFF0C\u6D88\u8017"
+  damage: 0
+  attackTimes: 1
+  block: 0
+  drawCards: 0
+  gainEnergy: 0
+  selfDamage: 0
+  exhaust: 1
+  isTemp: 0
+  ignoreBlock: 0
+  applyWeak: 0
+  applyVulnerable: 0
+  conditionalDamage: 0
+  conditionalBlock: 0
+  conditionalDraw: 0
+  statusEffect: 0

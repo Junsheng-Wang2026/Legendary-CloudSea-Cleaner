@@ -387,7 +387,7 @@ public class CombatManager : MonoBehaviour
             }
             else
             {
-                victoryPanel.SetActive(true);
+                ShowOnTop(victoryPanel);
             }
         }
     }
@@ -395,41 +395,48 @@ public class CombatManager : MonoBehaviour
     // 奖励选完/跳过后显示胜利面板
     public void ShowVictoryAfterReward()
     {
-        victoryPanel.SetActive(true);
+        ShowOnTop(victoryPanel);
+    }
+
+    // 结算按钮/面板放到最上层显示，避免被手牌挡住点不到
+    void ShowOnTop(GameObject panel)
+    {
+        panel.SetActive(true);
+        panel.transform.SetAsLastSibling();
     }
 
     void CheckPlayerDead()
     {
         if (playerHP <= 0)
         {
-            defeatPanel.SetActive(true);
+            ShowOnTop(defeatPanel);
         }
     }
 
     void RefreshUI()
     {
-        enemyHPText.text = "enemy HP:" + enemyHP;
+        enemyHPText.text = UIText.EnemyHP + enemyHP;
         if (enemyHealthBar != null) enemyHealthBar.SetHealth(enemyHP, _enemyMaxHP);
         if (playerHealthBar != null) playerHealthBar.SetHealth(playerHP, maxPlayerHP);
         // 显示意图
         switch (_currentIntent)
         {
             case EnemyIntent.Attack:
-                enemyIntentText.text = "Intent: Attack " + (enemyAttack + _buffAttack);
+                enemyIntentText.text = UIText.IntentAttack + (enemyAttack + _buffAttack);
                 break;
             case EnemyIntent.Defend:
-                enemyIntentText.text = "Intent: Defend " + _enemyBlock;
+                enemyIntentText.text = UIText.IntentDefend + _defendAmount;
                 break;
             case EnemyIntent.Buff:
-                enemyIntentText.text = "Intent: Buff -> next +" + _buffAmount;
+                enemyIntentText.text = UIText.IntentBuff + _buffAmount;
                 break;
             case EnemyIntent.Idle:
-                enemyIntentText.text = "Intent: Idle";
+                enemyIntentText.text = UIText.IntentIdle;
                 break;
         }
-        apText.text = "AP:" + _currentAP;
-        playerHPText.text = "PlayerHP:" + playerHP + "/" + maxPlayerHP;
-        blockText.text = "Block:" + _block;
+        apText.text = UIText.AP + _currentAP;
+        playerHPText.text = UIText.PlayerHP + playerHP + "/" + maxPlayerHP;
+        blockText.text = UIText.Block + _block;
 
         if (GameManager.Instance != null)
         {

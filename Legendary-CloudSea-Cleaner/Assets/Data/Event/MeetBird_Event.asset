@@ -13,18 +13,18 @@ MonoBehaviour:
   m_Name: MeetBird_Event
   m_EditorClassIdentifier: 
   eventName: TestEvent
-  description: Meeting f*cking bird.How to do?
+  description: "\u9047\u5230\u4E86\u4E00\u53EA\u9EBB\u96C0\uFF0C\u600E\u4E48\u529E\uFF1F"
   eventType: 1
   enemy: {fileID: 11400000, guid: 5974688479fa26b41be23d0ef89efb87, type: 2}
   enemyPool: {fileID: 0}
   forceFight: 0
   advanceDistance: 1
-  option1Text: Fight
+  option1Text: "\u6218\u6597"
   option1IsFight: 1
   option1TimeCost: 30
   option1HPChange: 0
   option1Reward: {fileID: 0}
-  option2Text: Run
+  option2Text: "\u9003\u8DD1"
   option2IsFight: 0
   option2TimeCost: 20
   option2HPChange: -5

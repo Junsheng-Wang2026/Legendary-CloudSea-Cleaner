@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 799d3bc573b11e5419f1dd63cec73a22, type: 3}
+  m_Name: "AGI_L19D_\u6728\u5927\u6728\u5927\u6728\u5927"
+  m_EditorClassIdentifier: 
+  cardName: "\u6728\u5927\u6728\u5927\u6728\u5927"
+  cardType: 1
+  rarity: 3
+  cost: 1
+  cardImage: {fileID: 21300000, guid: cc6b3157f38e6f340aba5ba514fcd521, type: 3}
+  description: "\u9020\u62102\u70B9\u4F24\u5BB3\uFF0C\u5171\u56DB\u6B21\u3002\u672C\u56DE\u5408\u6BCF\u4F7F\u7528\u8FC7\u4E00\u5F20\u724C\uFF0C\u591A\u9020\u6210\u4E00\u6BB5\u653B\u51FB\u4F24\u5BB3"
+  damage: 2
+  attackTimes: 4
+  block: 0
+  drawCards: 0
+  gainEnergy: 0
+  selfDamage: 0
+  exhaust: 0
+  isTemp: 0
+  ignoreBlock: 0
+  applyWeak: 0
+  applyVulnerable: 0
+  conditionalDamage: 0
+  conditionalBlock: 0
+  conditionalDraw: 0
+  statusEffect: 0

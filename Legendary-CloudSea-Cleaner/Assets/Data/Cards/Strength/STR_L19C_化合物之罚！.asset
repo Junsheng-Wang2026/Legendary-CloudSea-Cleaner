@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 799d3bc573b11e5419f1dd63cec73a22, type: 3}
+  m_Name: "STR_L19C_\u5316\u5408\u7269\u4E4B\u7F5A\uFF01"
+  m_EditorClassIdentifier: 
+  cardName: "\u5316\u5408\u7269\u4E4B\u7F5A\uFF01"
+  cardType: 0
+  rarity: 3
+  cost: 1
+  cardImage: {fileID: 21300000, guid: 2737fef6d360af64a9e61c122afbeea1, type: 3}
+  description: "\u9020\u621010\u70B9\u4F24\u5BB3\uFF0C\u989D\u5916\u4F24\u5BB3\u7B49\u4E8E\u672C\u5C40\u5BF9\u6218\u4E2D\u83B7\u5F97\u7684\u5168\u90E8\u683C\u6321\u503C\uFF08\u6700\u9AD860\u70B9\uFF09\u3002\u672C\u6B21\u4F24\u5BB3\u65E0\u89C6\u76EE\u6807\u683C\u6321\u3002\u6D88\u8017"
+  damage: 10
+  attackTimes: 1
+  block: 0
+  drawCards: 0
+  gainEnergy: 0
+  selfDamage: 0
+  exhaust: 1
+  isTemp: 0
+  ignoreBlock: 1
+  applyWeak: 0
+  applyVulnerable: 0
+  conditionalDamage: 0
+  conditionalBlock: 0
+  conditionalDraw: 0
+  statusEffect: 0
